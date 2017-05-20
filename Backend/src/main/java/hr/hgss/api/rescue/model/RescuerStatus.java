@@ -1,5 +1,7 @@
 package hr.hgss.api.rescue.model;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,4 +13,11 @@ import lombok.Data;
 public class RescuerStatus {
 	private String rescuerId;
 	private String status;
+
+	public DBObject toDbObject() {
+		BasicDBObject obj = new BasicDBObject();
+		obj.put("rescuerId", rescuerId);
+		obj.put("status", status);
+		return obj;
+	}
 }

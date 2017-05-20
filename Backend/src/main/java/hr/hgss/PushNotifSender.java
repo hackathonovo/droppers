@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PushNotifSender {
 
-	public void sendPushNotification(String title, String body, String iosToken) {
+	public void sendPushNotification(String title, String body, String rescueId, String iosToken) {
 		ApnsService serviceDev = APNS.newService()
 			.withCert("certfile", "pass")
 			.withSandboxDestination()
@@ -22,6 +22,7 @@ public class PushNotifSender {
 		payload.alertBody(body);
 		payload.alertTitle(title);
 		payload.sound("default");
+		payload.customField("rescue_id", rescueId);
 		serviceDev.push(iosToken, payload.build());
 	}
 }
