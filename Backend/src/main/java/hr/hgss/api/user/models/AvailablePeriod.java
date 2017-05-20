@@ -16,12 +16,9 @@ public class AvailablePeriod {
 	private int startHour;
 	private int endHour;
 
-	private boolean isAvaiable(long timestamp) {
+	public boolean isAvaiable(long timestamp) {
 		DateTimeZone dateTimeZone = DateTimeZone.forID(timezone);
 		DateTime dateTime = new DateTime(timestamp, dateTimeZone);
-
-
-
 
 
 		return false;

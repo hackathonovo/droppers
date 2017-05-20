@@ -3,20 +3,26 @@ package hr.hgss.api.user;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
+import hr.hgss.Time;
+import static hr.hgss.Util.ifNotNull;
 import hr.hgss.api.Keys;
 import hr.hgss.api.security.AuthorisationService;
 import hr.hgss.api.security.SecurityUtils;
+import hr.hgss.api.user.models.AvailablePeriod;
 import hr.hgss.api.user.models.LoginModel;
 import hr.hgss.api.user.models.RegisterModel;
 import hr.hgss.api.user.models.SetLocationModel;
 import hr.hgss.databes.redis.MongoCollections;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -41,12 +47,14 @@ public class UserService {
 	private final AuthorisationService authorisationService;
 	private final UserRepo userRepo;
 	private final MongoOperations userOperations;
+	private final Time time;
 
 	@Autowired
-	public UserService(AuthorisationService authorisationService, UserRepo userRepo, MongoOperations userOperations) {
+	public UserService(AuthorisationService authorisationService, UserRepo userRepo, MongoOperations userOperations, Time time) {
 		this.authorisationService = authorisationService;
 		this.userRepo = userRepo;
 		this.userOperations = userOperations;
+		this.time = time;
 	}
 
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
@@ -148,6 +156,36 @@ public class UserService {
 			return null;
 		}
 		return userRepo.findOne(setLocationModel.getId());
+	}
+
+
+	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public List<User> search(
+		@RequestParam(value = "firstName", required = false) String firstName,
+		@RequestParam(value = "lastName", required = false) String lastName,
+		@RequestParam(value = "rank", required = false) String rank,
+		@RequestParam(value = "isAvailable", required = false) Boolean isAvailable,
+		@RequestParam(value = "hasSearchDog", required = false) Boolean hasSearchDog,
+		@RequestParam(value = "specialities", required = false) List<String> specialities,
+		@RequestParam(value = "region", required = false) String region
+	) {
+		BasicDBObject obj = new BasicDBObject();
+		ifNotNull(firstName, first -> obj.put("firstName", first));
+		ifNotNull(lastName, last -> obj.put("lastName", last));
+		ifNotNull(rank, r -> obj.put("rank", rank));
+		ifNotNull(hasSearchDog, d -> obj.put("hasSearchDog", d));
+		ifNotNull(specialities, s -> obj.put("specialities", new BasicDBObject("$in", specialities)));
+		ifNotNull(region, r -> obj.put("region", r));
+		List<User> users = userOperations.find(new BasicQuery(obj), User.class);
+		if (isAvailable == null || isAvailable) {
+			long now = time.currentTimestampSec();
+			return users.stream().filter(user -> {
+				List<AvailablePeriod> periods = user.getAvailablePeriods();
+				return periods == null || periods.stream().allMatch(p -> p.isAvaiable(now));
+			}).collect(Collectors.toList());
+		}
+		return users;
 	}
 
 //	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

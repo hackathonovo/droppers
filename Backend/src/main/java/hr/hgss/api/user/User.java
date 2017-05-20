@@ -5,6 +5,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import static hr.hgss.Util.ifNotNull;
 import hr.hgss.api.user.models.Address;
+import hr.hgss.api.user.models.AvailablePeriod;
 import hr.hgss.api.user.models.Location;
 import hr.hgss.databes.redis.MongoCollections;
 import java.util.List;
@@ -41,6 +42,8 @@ public class User {
 	@JsonIgnore
 	@Indexed(unique = true, background = true)
 	private final String accessToken;
+
+	private final List<AvailablePeriod> availablePeriods;
 
 
 	public DBObject toDbObject() {
