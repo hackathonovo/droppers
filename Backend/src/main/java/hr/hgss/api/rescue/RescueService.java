@@ -125,7 +125,7 @@ public class RescueService {
 			id = StreamEx.of(areas).mapToInt(Area::getId).max().getAsInt();
 		}
 
-		BasicDBObject obj = new BasicDBObject("$push", new BasicDBObject("areas", model.getArea()));
+		BasicDBObject obj = new BasicDBObject("$push", new BasicDBObject("areas", model.toDbObject(id + 1)));
 		rescueOperations.updateFirst(
 			Query.query(Criteria.where("_id").is(model.getRescueId())),
 			new BasicUpdate(obj),
