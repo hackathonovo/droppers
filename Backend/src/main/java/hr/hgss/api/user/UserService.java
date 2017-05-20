@@ -5,10 +5,12 @@ import hr.hgss.api.security.SecurityUtils;
 import java.util.Objects;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,11 +39,14 @@ public class UserService {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public User login(
-		@RequestParam("username") String username,
-		@RequestParam("password") String pass,
+		@RequestBody String userNameAndPass,
 		HttpServletResponse response
 	) {
-		User user = userRepo.findByUserName(username);
+		JSONObject json = new JSONObject(userNameAndPass);
+		String userName = json.getString(Keys.USERNAME);
+		String pass = json.getString(Keys.PASS);
+
+		User user = userRepo.findByUserName(userName);
 
 		if (user == null) {
 			response.setStatus(HttpStatus.NOT_FOUND.value());
