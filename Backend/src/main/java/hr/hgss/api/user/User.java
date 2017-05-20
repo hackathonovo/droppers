@@ -10,6 +10,7 @@ import hr.hgss.api.user.models.ExtraAvailablePeriod;
 import hr.hgss.api.user.models.Location;
 import hr.hgss.databes.redis.MongoCollections;
 import java.util.List;
+import java.util.Set;
 import javax.util.streamex.StreamEx;
 import lombok.Builder;
 import lombok.Data;
@@ -31,27 +32,26 @@ public class User {
 	public final String id;
 
 	@Indexed(unique = true)
-	private final String email;
-	private final String firstName;
-	private final String lastName;
+	private String email;
+	private String firstName;
+	private String lastName;
 	@JsonIgnore
-	private final String passHash;
-	private final String phoneNumber;
-	private final List<String> specialties;
-	private final Address address;
-	private final Location lastKnownLocation;
-	private final String rank;
-	private final String region;
-	private final Boolean hasSearchDog;
+	private String passHash;
+	private String phoneNumber;
+	private List<String> specialties;
+	private Address address;
+	private Location lastKnownLocation;
+	private String rank;
+	private String region;
+	private Boolean hasSearchDog;
 	@Indexed(unique = true, background = true)
-	private final String accessToken;
-	private final String timezone;
-
+	private String accessToken;
+	private String timezone;
 
 	// Availability
-	private final List<AvailablePeriod> availablePeriods;
-	private final List<ExtraAvailablePeriod> extraAvailablePeriods;
-
+	private List<AvailablePeriod> availablePeriods;
+	private List<ExtraAvailablePeriod> extraAvailablePeriods;
+	private Set<String> iosTokens;
 
 	public DBObject toDbObject() {
 		BasicDBObject obj = new BasicDBObject();

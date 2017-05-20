@@ -15,8 +15,10 @@ import hr.hgss.api.user.models.SetLocationModel;
 import hr.hgss.databes.redis.MongoCollections;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
@@ -59,6 +61,12 @@ public class UserService {
 	}
 
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public List<User> getAll() {
+		return userRepo.findAll();
+	}
+
+	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public User getUser(@RequestParam("id") String id, HttpServletResponse response) {
 		User user = userOperations.findOne(
@@ -93,6 +101,15 @@ public class UserService {
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public User login(@RequestBody LoginModel loginModel, HttpServletResponse response) {
 		User user = userRepo.findByEmail(loginModel.getEmail());
+		if (user != null && loginModel.getIosToken() != null) {
+			Set<String> tokens = user.getIosTokens();
+			if (tokens == null) {
+				tokens = new HashSet<>();
+				user.setIosTokens(tokens);
+			}
+			tokens.add(loginModel.getIosToken());
+			userRepo.save(user);
+		}
 
 		if (user == null) {
 			response.setStatus(HttpStatus.NOT_FOUND.value());

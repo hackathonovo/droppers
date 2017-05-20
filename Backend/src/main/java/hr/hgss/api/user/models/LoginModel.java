@@ -10,4 +10,6 @@ public class LoginModel {
 
 	private String email;
 	private String password;
+
+	private String iosToken;
 }
