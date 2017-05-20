@@ -15,6 +15,7 @@ import hr.hgss.api.user.models.SetLocationModel;
 import hr.hgss.databes.redis.MongoCollections;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -38,7 +40,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * Created by Fredi Šarić on 29.04.17..
  */
 @Log
@@ -51,13 +52,15 @@ public class UserService {
 	private final UserRepo userRepo;
 	private final MongoOperations userOperations;
 	private final Time time;
+	private final MongoTemplate mongoTemplate;
 
 	@Autowired
-	public UserService(AuthorisationService authorisationService, UserRepo userRepo, MongoOperations userOperations, Time time) {
+	public UserService(AuthorisationService authorisationService, UserRepo userRepo, MongoOperations userOperations, Time time, MongoTemplate mongoTemplate) {
 		this.authorisationService = authorisationService;
 		this.userRepo = userRepo;
 		this.userOperations = userOperations;
 		this.time = time;
+		this.mongoTemplate = mongoTemplate;
 	}
 
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
@@ -74,7 +77,7 @@ public class UserService {
 			User.class,
 			MongoCollections.USERS
 		);
-		if (user == null){
+		if (user == null) {
 			response.setStatus(HttpStatus.NOT_FOUND.value());
 			return null;
 		}
@@ -154,25 +157,22 @@ public class UserService {
 			.region(registerModel.getRegion())
 			.hasSearchDog(registerModel.getHasSearchDog())
 			.build();
-		userRepo.insert(user);
-		return user;
+
+		return userRepo.insert(user);
 	}
 
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
-	@RequestMapping(value ="/location", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/location", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public User setLastKnownLocation(@RequestBody SetLocationModel setLocationModel, HttpServletResponse response) {
-		BasicDBObject updateObject = new BasicDBObject();
-		updateObject.put("lastKnownLocation.longitude", setLocationModel.getLongitude());
-		updateObject.put("lastKnownLocation.latitude", setLocationModel.getLatitude());
-		WriteResult writeResult = userOperations.updateFirst(
-			Query.query(Criteria.where(Keys._ID).is(setLocationModel.getId())),
-			Update.fromDBObject(new BasicDBObject("$set", updateObject)),
+		BasicDBObject basicDBObject = new BasicDBObject();
+		basicDBObject.put("lastKnownLocation.type", "Point");
+		List<Double> coordinates = Arrays.asList(setLocationModel.getLongitude(), setLocationModel.getLatitude());
+		basicDBObject.put("lastKnownLocation.coordinates", coordinates);
+		userOperations.updateFirst(
+			Query.query(Criteria.where("_id").is(setLocationModel.getId())),
+			new BasicUpdate(new BasicDBObject("$set", basicDBObject)),
 			User.class
 		);
-		if (writeResult.getN() == 0) {
-			response.setStatus(HttpStatus.NOT_FOUND.value());
-			return null;
-		}
 		return userRepo.findOne(setLocationModel.getId());
 	}
 

@@ -16,6 +16,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -40,7 +42,6 @@ public class User {
 	private String phoneNumber;
 	private List<String> specialties;
 	private Address address;
-	private Location lastKnownLocation;
 	private String rank;
 	private String region;
 	private Boolean hasSearchDog;
@@ -53,6 +54,9 @@ public class User {
 	private List<ExtraAvailablePeriod> extraAvailablePeriods;
 	private Set<String> iosTokens;
 
+	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
+	private Location lastKnownLocation;
+
 	public DBObject toDbObject() {
 		BasicDBObject obj = new BasicDBObject();
 		ifNotNull(id, o ->  obj.put("_id", o));
@@ -63,7 +67,6 @@ public class User {
 		ifNotNull(phoneNumber, o -> obj.put("phoneNumber", o));
 		ifNotNull(specialties, o -> obj.put("specialties", o));
 		ifNotNull(address, o -> obj.put("address", o.toDbObject()));
-		ifNotNull(lastKnownLocation, o -> obj.put("lastKnownLocation", o.toDbObject()));
 		ifNotNull(rank, o -> obj.put("rank", o));
 		ifNotNull(region, o -> obj.put("region", o));
 		ifNotNull(hasSearchDog, o -> obj.put("hasSearchDog", o));
