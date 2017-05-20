@@ -13,13 +13,15 @@ public class Keys {
 
 
 	public static final String X_AUTHORIZATION_TOKEN = "X-Authorization-Token";
-	public static final String ACCESS_TOKEN = "token";
+	public static final String ACCESS_TOKEN = "accessToken";
 
 	public static final String _ID = "_id";
 	public static final String ID = "id";
 
 	public static final String USERNAME = "username";
 	public static final String PASS = "password";
+	public static final String FIRST_NAME = "firstName";
+	public static final String LAST_NAME = "lastName";
 	public static final String NAME = "name";
 	public static final String EMAIL = "email";
 	public static final String PASS_HASH = "pass_hash";

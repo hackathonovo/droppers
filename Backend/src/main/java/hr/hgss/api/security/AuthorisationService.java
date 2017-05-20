@@ -1,12 +1,12 @@
 package hr.hgss.api.security;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import hr.hgss.api.Keys;
 import hr.hgss.databes.redis.MongoCollections;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
@@ -30,7 +30,7 @@ public class AuthorisationService {
 
 	public boolean authorise(String token) {
 		DBCollection mc = userRepository.getCollection(MongoCollections.USERS);
-		DBObject one = mc.findOne(new Document(Keys.ACCESS_TOKEN, token));
+		DBObject one = mc.findOne(new BasicDBObject(Keys.ACCESS_TOKEN, token));
 		return one != null;
 	}
 

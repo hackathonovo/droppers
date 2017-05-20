@@ -1,20 +1,28 @@
 package hr.hgss.api.user;
 
+import com.mongodb.DBObject;
 import hr.hgss.api.Keys;
 import hr.hgss.api.security.AuthorisationService;
 import hr.hgss.api.security.SecurityUtils;
 import hr.hgss.api.user.models.LoginModel;
 import hr.hgss.api.user.models.RegisterModel;
+import hr.hgss.databes.redis.MongoCollections;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import java.util.Objects;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,21 +36,46 @@ public class UserService {
 
 	// Needed for updates.
 	private final AuthorisationService authorisationService;
-	private final MongoTemplate userMongoTemplate;
 	private final UserRepo userRepo;
+	private final MongoOperations userOperations;
 
 	@Autowired
-	public UserService(AuthorisationService authorisationService, MongoTemplate userMongoTemplate, UserRepo userRepo) {
+	public UserService(AuthorisationService authorisationService, UserRepo userRepo, MongoOperations userOperations) {
 		this.authorisationService = authorisationService;
-		this.userMongoTemplate = userMongoTemplate;
 		this.userRepo = userRepo;
+		this.userOperations = userOperations;
+	}
+
+	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public User getUser(@RequestParam("id") String id, HttpServletResponse response) {
+		User user = userOperations.findOne(
+			Query.query(Criteria.where("_id").is(id)),
+			User.class,
+			MongoCollections.USERS
+		);
+		if (user == null){
+			response.setStatus(HttpStatus.NOT_FOUND.value());
+			return null;
+		}
+		return user;
+	}
+
+	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
+	@RequestMapping(value = "/update", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
+	public User updateUser(@RequestBody User updatedUser, HttpServletResponse response) {
+		DBObject dbObject = updatedUser.toDbObject();
+		dbObject.removeField("_id");
+		userOperations.updateFirst(
+			Query.query(Criteria.where("_id").is(updatedUser.getId())),
+			Update.fromDBObject(dbObject, "_id"),
+			User.class
+		);
+		return updatedUser;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
-	public User login(
-		@RequestBody LoginModel loginModel,
-		HttpServletResponse response
-	) {
+	public User login(@RequestBody LoginModel loginModel, HttpServletResponse response) {
 		User user = userRepo.findByEmail(loginModel.getEmail());
 
 		if (user == null) {
@@ -84,10 +117,15 @@ public class UserService {
 			.specialities(registerModel.getSpecialities())
 			.firstName(registerModel.getFirstName())
 			.lastName(registerModel.getLastName())
+			.rank(registerModel.getRank())
+			.region(registerModel.getRegion())
+			.hasSearchDog(registerModel.isHasSearchDog())
 			.build();
 		userRepo.insert(user);
 		return user;
 	}
+
+
 
 //	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 //	public User getUser(@PathVariable  Long id) {
