@@ -2,6 +2,7 @@ package hr.hgss.api;
 
 import hr.hgss.api.security.AuthorisationService;
 import java.util.Enumeration;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
@@ -27,11 +28,14 @@ public class AuthInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		String path = request.getServletPath();
+		log.info(request.getMethod());
+		if (Objects.equals(request.getMethod(), "OPTIONS")) return true;
 		if (path.startsWith("/swagger-resources") ||
 			path.equals("error") ||
 			path.equals("/v2/api-docs") ||
 			path.contains("login") ||
-			path.contains("register")) {
+			path.contains("register") ||
+			path.toLowerCase().contains("options")) {
 			return true;
 		}
 
