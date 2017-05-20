@@ -43,7 +43,6 @@ public class User {
 	private final String rank;
 	private final String region;
 	private final Boolean hasSearchDog;
-	@JsonIgnore
 	@Indexed(unique = true, background = true)
 	private final String accessToken;
 	private final String timezone;
