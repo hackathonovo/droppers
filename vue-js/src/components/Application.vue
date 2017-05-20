@@ -1,7 +1,11 @@
 <template>
   <div>
     <md-toolbar>
-      <md-button class="md-icon-button" @click.native="toggleSidenav">
+      <md-button
+        class="md-icon-button"
+        v-if="session.user"
+        @click.native="toggleSidenav"
+      >
         <md-icon>menu</md-icon>
       </md-button>
 
@@ -9,21 +13,29 @@
     </md-toolbar>
 
 
-    <md-sidenav class="md-left" ref="sidenav">
+    <md-sidenav v-if="session.user" class="md-left" ref="sidenav">
       <md-toolbar class="md-large">
         <div class="md-toolbar-container">
           <h3 class="md-title">Sidenav content</h3>
         </div>
       </md-toolbar>
 
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi cupiditate esse necessitatibus beatae nobis, deserunt ut est fugit, tempora deleniti, eligendi commodi doloribus. Nemo, assumenda possimus, impedit inventore perferendis iusto!</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi cupiditate esse necessitatibus beatae nobis,
+      deserunt ut est fugit, tempora deleniti, eligendi commodi doloribus. Nemo, assumenda possimus, impedit inventore perferendis iusto!</p>
     </md-sidenav>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+  import {mapState} from 'vuex';
+
   export default {
+    computed: {
+      ...mapState([
+        'session'
+      ])
+    },
     data() {
       return {
       };

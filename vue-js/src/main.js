@@ -6,6 +6,7 @@ import router from 'router';
 import store from 'store';
 
 import Application from 'components/Application';
+import 'whatwg-fetch';
 import 'application.scss';
 
 Vue.use(VueRouter);
