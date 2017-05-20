@@ -8,7 +8,7 @@ import static hr.hgss.Util.ifNotNull;
 import hr.hgss.api.Keys;
 import hr.hgss.api.security.AuthorisationService;
 import hr.hgss.api.security.SecurityUtils;
-import hr.hgss.api.user.models.AvailablePeriod;
+import hr.hgss.api.user.models.ExtraAvailablePeriod;
 import hr.hgss.api.user.models.LoginModel;
 import hr.hgss.api.user.models.RegisterModel;
 import hr.hgss.api.user.models.SetLocationModel;
@@ -23,6 +23,7 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -129,12 +130,12 @@ public class UserService {
 			.passHash(SecurityUtils.getPassHash(registerModel.getPassword()))
 			.address(registerModel.getAddress())
 			.accessToken(token)
-			.specialities(registerModel.getSpecialities())
+			.specialties(registerModel.getSpecialties())
 			.firstName(registerModel.getFirstName())
 			.lastName(registerModel.getLastName())
 			.rank(registerModel.getRank())
 			.region(registerModel.getRegion())
-			.hasSearchDog(registerModel.isHasSearchDog())
+			.hasSearchDog(registerModel.getHasSearchDog())
 			.build();
 		userRepo.insert(user);
 		return user;
@@ -167,7 +168,7 @@ public class UserService {
 		@RequestParam(value = "rank", required = false) String rank,
 		@RequestParam(value = "isAvailable", required = false) Boolean isAvailable,
 		@RequestParam(value = "hasSearchDog", required = false) Boolean hasSearchDog,
-		@RequestParam(value = "specialities", required = false) List<String> specialities,
+		@RequestParam(value = "specialties", required = false) List<String> specialities,
 		@RequestParam(value = "region", required = false) String region
 	) {
 		BasicDBObject obj = new BasicDBObject();
@@ -175,17 +176,32 @@ public class UserService {
 		ifNotNull(lastName, last -> obj.put("lastName", last));
 		ifNotNull(rank, r -> obj.put("rank", rank));
 		ifNotNull(hasSearchDog, d -> obj.put("hasSearchDog", d));
-		ifNotNull(specialities, s -> obj.put("specialities", new BasicDBObject("$in", specialities)));
+		ifNotNull(specialities, s -> obj.put("specialties", new BasicDBObject("$in", specialities)));
 		ifNotNull(region, r -> obj.put("region", r));
 		List<User> users = userOperations.find(new BasicQuery(obj), User.class);
 		if (isAvailable == null || isAvailable) {
-			long now = time.currentTimestampSec();
-			return users.stream().filter(user -> {
-				List<AvailablePeriod> periods = user.getAvailablePeriods();
-				return periods == null || periods.stream().allMatch(p -> p.isAvaiable(now));
-			}).collect(Collectors.toList());
+			long now = time.currentTimestampMillis();
+			return users.stream().filter(user -> user.isAvailable(now)).collect(Collectors.toList());
 		}
 		return users;
+	}
+
+	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
+	@RequestMapping(value = "/setExtraAvailablePeriod", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
+	public User setExtraAvailablePeriod(@RequestBody ExtraAvailablePeriod period, HttpServletResponse response) {
+		BasicDBObject update = new BasicDBObject("$push",
+			new BasicDBObject("extraAvailablePeriods", period.toDbObject())
+		);
+		WriteResult writeResult = userOperations.updateFirst(
+			Query.query(Criteria.where(Keys._ID).is(period.getId())),
+			new BasicUpdate(update),
+			User.class
+		);
+		if (writeResult.getN() == 0) {
+			response.setStatus(HttpStatus.NOT_FOUND.value());
+			return null;
+		}
+		return userRepo.findOne(period.getId());
 	}
 
 //	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

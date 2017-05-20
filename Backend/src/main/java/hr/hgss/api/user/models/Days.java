@@ -9,23 +9,26 @@ import lombok.Getter;
 public enum Days {
 
 	// Days
-	MON ("monday"),
-	TUE ("tuesday"),
-	WEN ("wednesday"),
-	THR ("thursday"),
-	FRI ("friday"),
-	SAT ("saturday"),
-	SUN ("sunday"),
+	MON ("monday", 1),
+	TUE ("tuesday", 2),
+	WEN ("wednesday", 3),
+	THR ("thursday", 4),
+	FRI ("friday", 5),
+	SAT ("saturday", 6),
+	SUN ("sunday", 7),
 
 	// Special parts
-	WEEKEND ("weekend"),
-	ALL("all");
+	WEEKEND ("weekend", -1),
+	ALL("all", -2);
 
 	@Getter
 	private final String period;
 
-	Days(String weekend) {
+	@Getter
+	private final int dayOfWeek;
+	Days(String weekend, int dayOfWeek) {
 		this.period = weekend;
+		this.dayOfWeek = dayOfWeek;
 	}
 
 }

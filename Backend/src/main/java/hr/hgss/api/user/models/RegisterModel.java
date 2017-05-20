@@ -15,13 +15,9 @@ public class RegisterModel {
 	private String password;
 	private String email;
 	private String phoneNumber;
-	private List<String> specialities;
+	private List<String> specialties;
 	private Address address;
-
-	private final String rank;
-	private final String region;
-	private final boolean hasSearchDog;
-
-
-
+	private String rank;
+	private String region;
+	private Boolean hasSearchDog;
 }

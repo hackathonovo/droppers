@@ -1,26 +1,35 @@
 package hr.hgss.api.user.models;
 
-import java.util.List;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import static hr.hgss.Util.ifNotNull;
+import lombok.Builder;
 import lombok.Data;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 
 /**
  * Created by Fredi Šarić on 20.05.17..
  */
-@Data
+@Data @Builder
 public class AvailablePeriod {
 
-	private List<Days> days;
-	private String timezone;
-	private int startHour;
-	private int endHour;
+	// Mode one
+	/*
+	* If none days is matched than it considered that user availability status is negation of
+	* availability field.
+	*
+	* If its matched than start and end hour is looked.
+	* than its returned
+	*
+	* */
+	private Days day;
+	private Integer endHour;
+	private Integer startHour;
 
-	public boolean isAvaiable(long timestamp) {
-		DateTimeZone dateTimeZone = DateTimeZone.forID(timezone);
-		DateTime dateTime = new DateTime(timestamp, dateTimeZone);
-
-
-		return false;
+	public DBObject toDbObject() {
+		BasicDBObject obj = new BasicDBObject();
+		ifNotNull(day, d -> obj.put("day", d.toString()));
+		ifNotNull(endHour, e -> obj.put("endHour", e));
+		ifNotNull(startHour, s -> obj.put("startHour", s));
+		return obj;
 	}
 }

@@ -6,11 +6,15 @@ import com.mongodb.DBObject;
 import static hr.hgss.Util.ifNotNull;
 import hr.hgss.api.user.models.Address;
 import hr.hgss.api.user.models.AvailablePeriod;
+import hr.hgss.api.user.models.ExtraAvailablePeriod;
 import hr.hgss.api.user.models.Location;
 import hr.hgss.databes.redis.MongoCollections;
 import java.util.List;
+import javax.util.streamex.StreamEx;
 import lombok.Builder;
 import lombok.Data;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -33,7 +37,7 @@ public class User {
 	@JsonIgnore
 	private final String passHash;
 	private final String phoneNumber;
-	private final List<String> specialities;
+	private final List<String> specialties;
 	private final Address address;
 	private final Location lastKnownLocation;
 	private final String rank;
@@ -42,8 +46,12 @@ public class User {
 	@JsonIgnore
 	@Indexed(unique = true, background = true)
 	private final String accessToken;
+	private final String timezone;
 
+
+	// Availability
 	private final List<AvailablePeriod> availablePeriods;
+	private final List<ExtraAvailablePeriod> extraAvailablePeriods;
 
 
 	public DBObject toDbObject() {
@@ -54,7 +62,7 @@ public class User {
 		ifNotNull(lastName, o -> obj.put("lastName", o));
 		ifNotNull(passHash, o -> obj.put("passHash", o));
 		ifNotNull(phoneNumber, o -> obj.put("phoneNumber", o));
-		ifNotNull(specialities, o -> obj.put("specialities", o));
+		ifNotNull(specialties, o -> obj.put("specialties", o));
 		ifNotNull(address, o -> obj.put("address", o.toDbObject()));
 		ifNotNull(lastKnownLocation, o -> obj.put("lastKnownLocation", o.toDbObject()));
 		ifNotNull(rank, o -> obj.put("rank", o));
@@ -62,4 +70,27 @@ public class User {
 		ifNotNull(hasSearchDog, o -> obj.put("hasSearchDog", o));
 		return obj;
 	}
+
+	public boolean isAvailable(long currentTimestamp) {
+		if (availablePeriods == null || availablePeriods.isEmpty()) {
+			return true;
+		}
+		DateTime now = new DateTime(currentTimestamp, DateTimeZone.forID(timezone));
+		int dayOfWeek = now.getDayOfWeek();
+		int hourOfDay = now.getHourOfDay();
+		boolean condition1 = StreamEx.of(availablePeriods)
+			.anyMatch(period ->
+				period.getDay().getDayOfWeek() == dayOfWeek &&
+					period.getStartHour() <= hourOfDay &&
+					hourOfDay < period.getEndHour());
+		boolean condition2 = StreamEx.of(extraAvailablePeriods)
+			.allMatch(period -> {
+				if (currentTimestamp >= period.getFromTimestamp() && currentTimestamp < period.getToTimestamp()) {
+					return period.getIsAvailable();
+				}
+				return true;
+			});
+		return condition1 && condition2;
+	}
+
 }
