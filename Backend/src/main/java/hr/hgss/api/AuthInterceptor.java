@@ -38,9 +38,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 		Enumeration<String> headerNames = request.getHeaderNames();
 		while(headerNames.hasMoreElements()) {
 			String s = headerNames.nextElement();
-			log.info(s);
-			log.info(request.getHeader(s));
+			log.info("Header -> " +s);
+			log.info("Header value -> "+ request.getHeader(s));
 		}
+		log.info("Auth type " + request.getAuthType());
 		String token = request.getHeader(Keys.X_AUTHORIZATION_TOKEN);
 		request.getHeaderNames();
 		if (token == null || token.isEmpty() || !authorisationService.authorise(token)) {
