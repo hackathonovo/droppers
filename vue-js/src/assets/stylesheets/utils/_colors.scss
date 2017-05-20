@@ -1,0 +1,43 @@
+$base-black: #000000;
+$base-gray: #9B9B9B;
+$base-dark-gray: #4A4A4A;
+$base-light-gray: #D8D8D8;
+$base-transparent-gray: rgba(216, 216, 216, 0.5);
+$base-white: #FFFFFF;
+$base-white-dimmed: #FAFAFA;
+$base-red: #F57162;
+$base-light-red: #EF5950;
+
+$base-turquoise: #00A1BA;
+$base-light-blue: #8ADAE6;
+$base-dark-blue: #50B5D1;
+
+$base-orange: #F5A158;
+$base-dark-orange: #F57162;
+
+$color-primary: $base-turquoise;
+$color-secondary: $base-orange;
+
+$color-text-main: $base-dark-gray;
+$color-text-main-light: $base-gray;
+$color-text-main-lightest: $base-light-gray;
+$color-text-light: $base-white;
+$color-text-primary: $color-primary;
+$color-text-primary-light: $base-light-blue;
+$color-text-action: $color-secondary;
+$color-text-invalid: $base-light-red;
+
+$color-border-main: $base-light-gray;
+$color-border-primary: $color-primary;
+$color-border-light: $base-white;
+
+$color-bg-white: $base-white;
+$color-bg-white-dimmed: $base-white-dimmed;
+$color-bg-primary: $color-primary;
+$color-bg-primary-light: $base-light-blue;
+$color-bg-gray-light: $base-light-gray;
+
+$input-box-shadow: inset 0 -2px 0 0 $base-light-gray;
+$input-box-shadow-invalid: inset 0 -2px 0 0 $base-dark-orange;
+
+$base-shadow-color: rgba($base-black, 0.15);

@@ -1,0 +1,63 @@
+{
+  "name": "vue-hackatonovo",
+  "version": "0.0.1",
+  "scripts": {
+    "__eslint": "eslint src/**/*.{js,vue}",
+    "start": "NODE_ENV='development' node_modules/.bin/webpack-dev-server --progress --watch --colors",
+    "build": "NODE_ENV='development' node_modules/.bin/webpack --progress --colors"
+  },
+  "dependencies": {
+    "media-blender": "^2.1.0",
+    "normalize.css": "^6.0.0",
+    "vue": "^2.2.4",
+    "vue-material": "^0.7.1",
+    "vue-router": "^2.5.2",
+    "vuex": "^2.3.1",
+    "whatwg-fetch": "^2.0.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.7.7",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^6.4.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-es2015": "^6.22.0",
+    "css-loader": "^0.28.0",
+    "cssnano": "^3.10.0",
+    "eslint": "^3.19.0",
+    "eslint-plugin-html": "^2.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.1",
+    "html-webpack-plugin": "2.22.0",
+    "node-sass": "^4.5.2",
+    "postcss-loader": "^1.3.3",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^6.0.3",
+    "string-replace-webpack-plugin": "^0.1.3",
+    "vue-loader": "^11.1.4",
+    "vue-style-loader": "^3.0.1",
+    "vue-template-compiler": "^2.3.0",
+    "webpack": "^2.2.0",
+    "webpack-dev-server": "2.3.0"
+  },
+  "babel": {
+    "plugins": [
+      "transform-object-rest-spread"
+    ],
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "last 2 versions"
+            ]
+          }
+        }
+      ]
+    ]
+  },
+  "author": "mjanjic"
+}
