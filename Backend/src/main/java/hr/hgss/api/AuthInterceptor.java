@@ -47,7 +47,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 		}
 		log.info("Auth type " + request.getAuthType());
 		String token = request.getHeader(Keys.X_AUTHORIZATION_TOKEN);
-		request.getHeaderNames();
+		if (token == null) {
+			token = request.getHeader(Keys.X_AUTHORIZATION_TOKEN.toLowerCase());
+		}
+		log.info("Recieved tokens" + token);
 		if (token == null || token.isEmpty() || !authorisationService.authorise(token)) {
 			System.out.println("Forbidden");
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);

@@ -91,11 +91,7 @@ public class UserService {
 	public User updateUser(@RequestBody User updatedUser, HttpServletResponse response) {
 		DBObject dbObject = updatedUser.toDbObject();
 		dbObject.removeField("_id");
-		WriteResult writeResult = userOperations.updateFirst(
-			Query.query(Criteria.where("_id").is(updatedUser.getId())),
-			Update.fromDBObject(new BasicDBObject("$set", dbObject), "_id"),
-			User.class
-		);
+		WriteResult writeResult = userOperations.updateFirst(Query.query(Criteria.where("_id").is(updatedUser.getId())), Update.fromDBObject(new BasicDBObject("$set", dbObject), "_id"), User.class);
 		if (writeResult.getN() == 0) {
 			response.setStatus(HttpStatus.NOT_FOUND.value());
 			return null;
