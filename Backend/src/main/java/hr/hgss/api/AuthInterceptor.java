@@ -3,6 +3,7 @@ package hr.hgss.api;
 import hr.hgss.api.security.AuthorisationService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * Created by Fredi Šarić on 20.05.17..
  */
-@Component
+@Component @Slf4j
 public class AuthInterceptor implements HandlerInterceptor {
 
 	private final AuthorisationService authorisationService;
@@ -24,6 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		log.info(request.toString());
 		String path = request.getServletPath();
 		if (path.startsWith("/swagger-resources") ||
 			path.equals("error") ||
@@ -35,6 +37,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		String token = request.getHeader(Keys.X_AUTHORIZATION_TOKEN);
 		if (token == null || token.isEmpty() || !authorisationService.authorise(token)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			log.warn("Forbidden");
 			return false;
 		}
 		return true;

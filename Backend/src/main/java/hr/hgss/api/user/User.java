@@ -27,6 +27,8 @@ public class User {
 
 	private final String name;
 
+	private final String phoneNumber;
+
 	@JsonIgnore
 	@Indexed(unique = true, background = true)
 	private final String accessToken;

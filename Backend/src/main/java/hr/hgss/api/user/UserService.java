@@ -56,6 +56,30 @@ public class UserService {
 		return user;
 	}
 
+	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
+	public User register(
+		@RequestParam("name") String name,
+		@RequestParam("username") String username,
+		@RequestParam("pass") String pass,
+		@RequestParam("email") String email,
+		@RequestParam("phone_number") String phoneNumber
+	) {
+		User inMongo = userRepo.findByUserName(username);
+		if (inMongo != null) {
+
+		}
+
+
+		User user = User.builder()
+			.name(name)
+			.userName(username)
+			.passHash(SecurityUtils.getPassHash(pass))
+			.email(email)
+			.phoneNumber(phoneNumber)
+			.build();
+		return null;
+	}
+
 //	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 //	public User getUser(@PathVariable  Long id) {
 //		User one = userRepository.findOne(id);
