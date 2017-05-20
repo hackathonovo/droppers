@@ -1,8 +1,10 @@
 package hr.hgss.api;
 
 import hr.hgss.api.security.AuthorisationService;
+import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * Created by Fredi Šarić on 20.05.17..
  */
-@Component
+@Component @Log
 public class AuthInterceptor implements HandlerInterceptor {
 
 	private final AuthorisationService authorisationService;
@@ -32,7 +34,15 @@ public class AuthInterceptor implements HandlerInterceptor {
 			path.contains("register")) {
 			return true;
 		}
+
+		Enumeration<String> headerNames = request.getHeaderNames();
+		while(headerNames.hasMoreElements()) {
+			String s = headerNames.nextElement();
+			log.info(s);
+			log.info(request.getHeader(s));
+		}
 		String token = request.getHeader(Keys.X_AUTHORIZATION_TOKEN);
+		request.getHeaderNames();
 		if (token == null || token.isEmpty() || !authorisationService.authorise(token)) {
 			System.out.println("Forbidden");
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
