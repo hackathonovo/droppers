@@ -33,6 +33,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,6 +44,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by Fredi Šarić on 29.04.17..
  */
 @Log
+@CrossOrigin
 @RestController
 @RequestMapping(value = Keys.API_ENPOINT + "users", produces = APPLICATION_JSON_VALUE)
 public class UserService {
