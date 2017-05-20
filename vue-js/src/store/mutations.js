@@ -8,7 +8,6 @@ export default {
   },
 
   [mutationTypes.SESSION_SUCCESS](state, {user, token}) {
-    debugger;
     state.session.isLoading = false;
     state.session.isLoaded = true;
     state.session.user = user;

@@ -4,7 +4,6 @@ export default {
   },
 
   currentUser(state) {
-    debugger;
     return state.session.user;
   }
 };
