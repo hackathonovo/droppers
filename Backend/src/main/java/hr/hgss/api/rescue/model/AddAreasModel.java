@@ -1,6 +1,5 @@
 package hr.hgss.api.rescue.model;
 
-import java.util.List;
 import lombok.Data;
 
 /**
@@ -10,5 +9,5 @@ import lombok.Data;
 public class AddAreasModel {
 
 	private final String rescueId;
-	private final List<Area> polygons;
+	private final Area area;
 }

@@ -101,6 +101,7 @@ public class UserService {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public User login(@RequestBody LoginModel loginModel, HttpServletResponse response) {
+		log.info("Login: " + loginModel);
 		User user = userRepo.findByEmail(loginModel.getEmail());
 		if (user != null && loginModel.getIosToken() != null) {
 			Set<String> tokens = user.getIosTokens();
@@ -109,7 +110,11 @@ public class UserService {
 				user.setIosTokens(tokens);
 			}
 			tokens.add(loginModel.getIosToken());
-			userRepo.save(user);
+			userOperations.updateFirst(
+				Query.query(Criteria.where("_id").is(user.getId())),
+				Update.update("iosTokens", tokens),
+				User.class
+			);
 		}
 
 		if (user == null) {

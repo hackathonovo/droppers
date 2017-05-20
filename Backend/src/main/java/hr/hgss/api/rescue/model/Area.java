@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 public class Area {
 
-	private final String id;
+	private final Integer id;
 	private final String type;
 	private final List<List<List<Double>>> coordinates;
 

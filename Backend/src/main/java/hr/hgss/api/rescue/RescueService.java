@@ -1,5 +1,6 @@
 package hr.hgss.api.rescue;
 
+import com.mongodb.BasicDBObject;
 import hr.hgss.PushNotifSender;
 import hr.hgss.Util;
 import hr.hgss.api.Keys;
@@ -17,13 +18,16 @@ import io.swagger.annotations.ApiImplicitParams;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletResponse;
 import javax.util.streamex.StreamEx;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.http.HttpStatus;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -106,10 +110,25 @@ public class RescueService {
 
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value = "/add_areas", method = RequestMethod.POST)
-	public Rescue defineAreas(@RequestBody AddAreasModel model) {
+	public Rescue defineAreas(@RequestBody AddAreasModel model, HttpServletResponse response) {
+		Rescue one = repo.findOne(model.getRescueId());
+		if (one == null) {
+			response.setStatus(HttpStatus.NOT_FOUND.value());
+			return null;
+		}
+
+		List<Area> areas = one.getAreas();
+		Integer id;
+		if (areas == null) {
+			id = 0;
+		} else {
+			id = StreamEx.of(areas).mapToInt(Area::getId).max().getAsInt();
+		}
+
+		BasicDBObject obj = new BasicDBObject("$push", new BasicDBObject("areas", model.getArea()));
 		rescueOperations.updateFirst(
 			Query.query(Criteria.where("_id").is(model.getRescueId())),
-			Update.update("areas", StreamEx.of(model.getPolygons()).map(Area::toDbObject).toList()),
+			new BasicUpdate(obj),
 			Rescue.class
 		);
 		return repo.findOne(model.getRescueId());

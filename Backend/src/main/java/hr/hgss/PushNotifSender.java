@@ -14,7 +14,7 @@ public class PushNotifSender {
 
 	public void sendPushNotification(String title, String body, String rescueId, String iosToken) {
 		ApnsService serviceDev = APNS.newService()
-			.withCert("certfile", "pass")
+			.withCert("./certs/Certificates.p12", "abc")
 			.withSandboxDestination()
 			.build();
 
