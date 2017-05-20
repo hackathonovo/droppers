@@ -29,5 +29,23 @@ export default {
 
   [mutationTypes.UNAUTHENTICATED_REQUEST](state, pathName) {
     state.session.nextPathName = pathName;
+  },
+
+  // RESCUERS MUTATIONS
+
+  [mutationTypes.RESCUERS_REQUEST](state) {
+    state.rescuers.isLoading = true;
+  },
+
+  [mutationTypes.RESCUERS_SUCCESS](state, data) {
+    state.rescuers.data = data;
+    state.rescuers.isLoaded = true;
+    state.rescuers.isLoading = false;
+  },
+
+  [mutationTypes.RESCUERS_FAILURE](state) {
+    state.rescuers.isLoading = false;
+    state.rescuers.isLoaded = false;
   }
+
 };

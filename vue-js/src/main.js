@@ -11,7 +11,12 @@ import 'application.scss';
 
 Vue.use(VueRouter);
 Vue.use(VueMaterial);
-
+Vue.material.registerTheme('default', {
+  primary: 'blue',
+  accent: 'red',
+  warn: 'amber',
+  background: 'white'
+});
 
 const APP_CONTAINER_ID = 'app';
 const appContainer = document.getElementById(APP_CONTAINER_ID);

@@ -2,10 +2,10 @@ import * as mutationTypes from 'store/mutation-types';
 
 export default function({apiAdapter, localStorage}) {
   return {
-    login({commit}, {email, password}) {
+    login({commit}, {username, password}) {
       commit(mutationTypes.SESSION_REQUEST);
       return apiAdapter.login({
-        email, password
+        username, password
       }).then(({user, token}) => {
         commit(mutationTypes.SESSION_SUCCESS, {
           user,
@@ -39,6 +39,16 @@ export default function({apiAdapter, localStorage}) {
     logout({commit}) {
       localStorage.removeItem('api-token');
       commit(mutationTypes.SESSION_DESTROY);
-    }
+    },
+
+    fetchRescuers({commit}) {
+      commit(mutationTypes.RESCUERS_REQUEST);
+      apiAdapter.fetchRescuers().then((data) => {
+        commit(mutationTypes.RESCUERS_SUCCESS, data);
+      }).catch((error) => {
+        commit(mutationTypes.RESCUERS_FAILURE);
+        throw error;
+      });
+    },
   };
 }

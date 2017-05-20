@@ -2,7 +2,13 @@ const state = {
   session: {
     isLoaded: false,
     isLoading: false,
-    user: null
+    user: null,
+    token: null
+  },
+  rescuers: {
+    isLoaded: false,
+    isLoading: false,
+    data: []
   }
 };
 

@@ -1,15 +1,22 @@
 <template>
   <div>
-    HOME PAGE
+    RES DETS
 
   </div>
 </template>
 
 <script>
   export default {
+    props: {
+    },
     data() {
       return {
       };
+    },
+
+    created() {
+      console.log(this.$route.params.id);
+      // this.getRescuerDetails(this.$route.params.id);
     }
   };
 </script>

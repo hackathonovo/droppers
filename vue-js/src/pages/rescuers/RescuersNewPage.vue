@@ -1,6 +1,6 @@
 <template>
   <div>
-    HOME PAGE
+  RES new
 
   </div>
 </template>

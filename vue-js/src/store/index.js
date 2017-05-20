@@ -5,10 +5,11 @@ import Vuex from 'vuex';
 import apiAdapter from 'services/api-adapter';
 import * as localStorage from 'services/local-storage';
 
-import state from './state';
-import mutations from './mutations';
-import actionsGenerator from './actions';
-import getters from './getters';
+import state from 'store/state';
+import mutations from 'store/mutations';
+import actionsGenerator from 'store/actions';
+import getters from 'store/getters';
+
 
 Vue.use(Vuex);
 
