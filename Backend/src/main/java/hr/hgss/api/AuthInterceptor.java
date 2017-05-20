@@ -25,7 +25,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		String path = request.getServletPath();
-		System.out.println("THIS IS PATH -------------------------------------------------- " + path);
 		if (path.startsWith("/swagger-resources") ||
 			path.equals("error") ||
 			path.equals("/v2/api-docs") ||
