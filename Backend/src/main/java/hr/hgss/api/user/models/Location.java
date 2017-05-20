@@ -11,8 +11,8 @@ import lombok.Data;
 @Data
 public class Location {
 
-	private final Long latitude;
-	private final Long longitude;
+	private final Double latitude;
+	private final Double longitude;
 
 	public DBObject toDbObject() {
 		BasicDBObject obj = new BasicDBObject();

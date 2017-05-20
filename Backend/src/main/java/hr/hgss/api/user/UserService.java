@@ -1,11 +1,14 @@
 package hr.hgss.api.user;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 import hr.hgss.api.Keys;
 import hr.hgss.api.security.AuthorisationService;
 import hr.hgss.api.security.SecurityUtils;
 import hr.hgss.api.user.models.LoginModel;
 import hr.hgss.api.user.models.RegisterModel;
+import hr.hgss.api.user.models.SetLocationModel;
 import hr.hgss.databes.redis.MongoCollections;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -66,11 +69,15 @@ public class UserService {
 	public User updateUser(@RequestBody User updatedUser, HttpServletResponse response) {
 		DBObject dbObject = updatedUser.toDbObject();
 		dbObject.removeField("_id");
-		userOperations.updateFirst(
+		WriteResult writeResult = userOperations.updateFirst(
 			Query.query(Criteria.where("_id").is(updatedUser.getId())),
-			Update.fromDBObject(dbObject, "_id"),
+			Update.fromDBObject(new BasicDBObject("$set", dbObject), "_id"),
 			User.class
 		);
+		if (writeResult.getN() == 0) {
+			response.setStatus(HttpStatus.NOT_FOUND.value());
+			return null;
+		}
 		return updatedUser;
 	}
 
@@ -125,7 +132,23 @@ public class UserService {
 		return user;
 	}
 
-
+	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
+	@RequestMapping(value ="/location", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
+	public User setLastKnownLocation(@RequestBody SetLocationModel setLocationModel, HttpServletResponse response) {
+		BasicDBObject updateObject = new BasicDBObject();
+		updateObject.put("lastKnownLocation.longitude", setLocationModel.getLongitude());
+		updateObject.put("lastKnownLocation.latitude", setLocationModel.getLatitude());
+		WriteResult writeResult = userOperations.updateFirst(
+			Query.query(Criteria.where(Keys._ID).is(setLocationModel.getId())),
+			Update.fromDBObject(new BasicDBObject("$set", updateObject)),
+			User.class
+		);
+		if (writeResult.getN() == 0) {
+			response.setStatus(HttpStatus.NOT_FOUND.value());
+			return null;
+		}
+		return userRepo.findOne(setLocationModel.getId());
+	}
 
 //	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 //	public User getUser(@PathVariable  Long id) {
