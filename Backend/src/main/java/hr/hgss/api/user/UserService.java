@@ -1,11 +1,13 @@
 package hr.hgss.api.user;
 
 import hr.hgss.api.Keys;
+import hr.hgss.api.security.AuthorisationService;
 import hr.hgss.api.security.SecurityUtils;
+import hr.hgss.api.user.models.LoginModel;
+import hr.hgss.api.user.models.RegisterModel;
 import java.util.Objects;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
@@ -13,7 +15,6 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -26,33 +27,29 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserService {
 
 	// Needed for updates.
+	private final AuthorisationService authorisationService;
 	private final MongoTemplate userMongoTemplate;
 	private final UserRepo userRepo;
 
 	@Autowired
-	public UserService(MongoTemplate userMongoTemplate, UserRepo userRepo) {
+	public UserService(AuthorisationService authorisationService, MongoTemplate userMongoTemplate, UserRepo userRepo) {
+		this.authorisationService = authorisationService;
 		this.userMongoTemplate = userMongoTemplate;
 		this.userRepo = userRepo;
 	}
 
-
-
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public User login(
-		@RequestBody String userNameAndPass,
+		@RequestBody LoginModel loginModel,
 		HttpServletResponse response
 	) {
-		JSONObject json = new JSONObject(userNameAndPass);
-		String userName = json.getString(Keys.USERNAME);
-		String pass = json.getString(Keys.PASS);
-
-		User user = userRepo.findByUserName(userName);
+		User user = userRepo.findByEmail(loginModel.getEmail());
 
 		if (user == null) {
 			response.setStatus(HttpStatus.NOT_FOUND.value());
 			return null;
 		}
-		if (!Objects.equals(user.getPassHash(), SecurityUtils.getPassHash(pass))) {
+		if (!Objects.equals(user.getPassHash(), SecurityUtils.getPassHash(loginModel.getPassword()))) {
 			response.setStatus(HttpStatus.FORBIDDEN.value());
 			return null;
 		}
@@ -62,27 +59,34 @@ public class UserService {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
-	public User register(
-		@RequestParam("name") String name,
-		@RequestParam("username") String username,
-		@RequestParam("pass") String pass,
-		@RequestParam("email") String email,
-		@RequestParam("phone_number") String phoneNumber
-	) {
-		User inMongo = userRepo.findByUserName(username);
-		if (inMongo != null) {
-
+	public User register(@RequestBody RegisterModel registerModel, HttpServletResponse response) {
+		String email = registerModel.getEmail();
+		User userByEmail = userRepo.findByEmail(email);
+		if (userByEmail != null) {
+			response.setStatus(HttpStatus.CONFLICT.value());
+			return null;
 		}
 
+		// Generate unique token
+		String token;
+		while (true) {
+			token = authorisationService.generateAccessToken();
+			if (userRepo.findByAccessToken(token) == null) break;
+		}
 
+		response.addHeader(Keys.X_AUTHORIZATION_TOKEN, token);
 		User user = User.builder()
-			.name(name)
-			.userName(username)
-			.passHash(SecurityUtils.getPassHash(pass))
-			.email(email)
-			.phoneNumber(phoneNumber)
+			.email(registerModel.getEmail())
+			.phoneNumber(registerModel.getPhoneNumber())
+			.passHash(SecurityUtils.getPassHash(registerModel.getPassword()))
+			.address(registerModel.getAddress())
+			.accessToken(token)
+			.specialities(registerModel.getSpecialities())
+			.firstName(registerModel.getFirstName())
+			.lastName(registerModel.getLastName())
 			.build();
-		return null;
+		userRepo.insert(user);
+		return user;
 	}
 
 //	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

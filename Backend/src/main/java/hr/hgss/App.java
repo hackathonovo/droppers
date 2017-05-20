@@ -23,12 +23,11 @@ public class App {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
 		UserRepo userRepo = context.getBean(UserRepo.class);
-		User admin = userRepo.findByUserName("admin");
+		User admin = userRepo.findByEmail(Keys.ADMIN_EMAIL);
 		if (admin == null) {
 			// Register admin;
 			User build = User.builder()
-				.name(Keys.ADMIN)
-				.userName(Keys.ADMIN)
+				.email(Keys.ADMIN_EMAIL)
 				.passHash(SecurityUtils.getPassHash(Keys.ADMIN))
 				.accessToken(context.getBean(AuthorisationService.class).generateAccessToken())
 				.build();

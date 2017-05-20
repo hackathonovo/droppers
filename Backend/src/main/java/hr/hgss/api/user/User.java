@@ -1,11 +1,12 @@
 package hr.hgss.api.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import hr.hgss.api.Keys;
+import hr.hgss.api.user.models.Address;
+import hr.hgss.api.user.models.Location;
 import hr.hgss.databes.redis.MongoCollections;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
-import org.bson.Document;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 
@@ -18,27 +19,24 @@ import org.springframework.data.mongodb.core.index.Indexed;
 public class User {
 
 	@Indexed(unique = true)
-	private final String userName;
+	private final String email;
+
+	private final String firstName;
+
+	private final String lastName;
 
 	@JsonIgnore
 	private final String passHash;
 
-	private final String email;
-
-	private final String name;
-
 	private final String phoneNumber;
+
+	private final List<String> specialities;
+
+	private final Address address;
+
+	private final Location lastKnownLocation;
 
 	@JsonIgnore
 	@Indexed(unique = true, background = true)
 	private final String accessToken;
-
-	public Document toDocument() {
-		Document doc = new Document();
-		doc.put(Keys.NAME, name);
-		doc.put(Keys.EMAIL, email);
-		doc.put(Keys.PASS_HASH, passHash);
-		doc.put(Keys.ACCESS_TOKEN, accessToken);
-		return doc;
-	}
 }

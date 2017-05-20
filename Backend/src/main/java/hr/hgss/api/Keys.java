@@ -9,6 +9,7 @@ public class Keys {
 	public static final String API_ENPOINT = "/api/v1/";
 
 	public static final String ADMIN = "admin";
+	public static final String ADMIN_EMAIL = "admin@hgss.com";
 
 
 	public static final String X_AUTHORIZATION_TOKEN = "X-Authorization-Token";
