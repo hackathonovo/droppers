@@ -13,6 +13,8 @@ import hr.hgss.api.user.models.LoginModel;
 import hr.hgss.api.user.models.RegisterModel;
 import hr.hgss.api.user.models.SetLocationModel;
 import hr.hgss.databes.redis.MongoCollections;
+import hr.hgss.databes.redis.RedisManager;
+import hr.hgss.databes.redis.Redises;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import java.util.Arrays;
@@ -39,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import redis.clients.jedis.Jedis;
 
 /**
  * Created by Fredi Šarić on 29.04.17..
@@ -55,14 +58,16 @@ public class UserService {
 	private final MongoOperations userOperations;
 	private final Time time;
 	private final MongoTemplate mongoTemplate;
+	private final RedisManager redisManager;
 
 	@Autowired
-	public UserService(AuthorisationService authorisationService, UserRepo userRepo, MongoOperations userOperations, Time time, MongoTemplate mongoTemplate) {
+	public UserService(AuthorisationService authorisationService, UserRepo userRepo, MongoOperations userOperations, Time time, MongoTemplate mongoTemplate, RedisManager redisManager) {
 		this.authorisationService = authorisationService;
 		this.userRepo = userRepo;
 		this.userOperations = userOperations;
 		this.time = time;
 		this.mongoTemplate = mongoTemplate;
+		this.redisManager = redisManager;
 	}
 
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
@@ -176,6 +181,14 @@ public class UserService {
 			new BasicUpdate(new BasicDBObject("$set", basicDBObject)),
 			User.class
 		);
+
+		try (Jedis jedis = redisManager.get(Redises.GEO)) {
+			String key = setLocationModel.getId();
+			String value = System.currentTimeMillis() + "_" + setLocationModel.getLongitude() + "_" + setLocationModel.getLatitude();
+			jedis.lpush(key, value);
+			jedis.ltrim(key, 0, 100);
+		};
+
 		return userRepo.findOne(setLocationModel.getId());
 	}
 
