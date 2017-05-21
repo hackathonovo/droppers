@@ -2,6 +2,14 @@
   <div>
     <div id="map" :class="$style.map"></div>
     <md-button class="md-warn md-raised" @click.native="onSave">Save</md-button>
+
+    <md-card>
+      <md-input-container>
+        <label>Finish notes</label>
+        <md-textarea v-model="finish.finishNotes"></md-textarea>
+      </md-input-container>
+    <md-button class="md-warn md-raised" @click.native="onFinish">Finish</md-button>
+    </md-card>
   </div>
 </template>
 
@@ -20,11 +28,15 @@
 
     methods: {
       ...mapMutations([
-        mutationTypes.AREA_DETAIL_SET
+        mutationTypes.AREA_DETAIL_SET,
+        mutationTypes.RESCUE_FINISH,
+        mutationTypes.ACTIONS_FAILURE,
+        mutationTypes.HISTORY_FAILURE
       ]),
 
       ...mapActions([
-        'sendAreaDetails'
+        'sendAreaDetails',
+        'finishRescue'
       ]),
 
       initMap() {
@@ -62,38 +74,73 @@
         }
 
 
-        const drawingManager = new window.google.maps.drawing.DrawingManager({
-          drawingControl: true,
-          drawingControlOptions: {
-            position: window.google.maps.ControlPosition.TOP_CENTER,
-            drawingModes: ['polygon']
-          }
-        });
-        drawingManager.setMap(this.map);
 
-        window.google.maps.event.addListener(drawingManager, 'polygoncomplete', (poly) => {
-          const lines = poly.getPaths().b[0].b;
-          const polygon = [];
+        if (!currAction.areas) {
+          const drawingManager = new window.google.maps.drawing.DrawingManager({
+            drawingControl: true,
+            drawingControlOptions: {
+              position: window.google.maps.ControlPosition.TOP_CENTER,
+              drawingModes: ['polygon']
+            }
+          });
+          drawingManager.setMap(this.map);
 
-          lines.forEach((line) => {
-            polygon.push([
-              line.lng(),
-              line.lat()
-            ]);
+          window.google.maps.event.addListener(drawingManager, 'polygoncomplete', (poly) => {
+            const lines = poly.getPaths().b[0].b;
+            const polygon = [];
+
+            lines.forEach((line) => {
+              polygon.push([
+                line.lng(),
+                line.lat()
+              ]);
+            });
+
+            this.features.coordinates = [polygon];
+          });
+        } else {
+          const polyCoords = currAction.areas[0].coordinates[0].map((coord) => {
+            return {
+              lng: coord[0],
+              lat: coord[1]
+            };
           });
 
-          this.features.coordinates = [polygon];
-        });
+          const polygon = new window.google.maps.Polygon({
+            paths: polyCoords
+          });
+          polygon.setMap(this.map);
+        }
       },
 
       onSave() {
         this[mutationTypes.AREA_DETAIL_SET](this.features);
         this.sendAreaDetails();
+
+        this.$router.push({
+          path: '/actions'
+        });
+      },
+
+      onFinish() {
+        this[mutationTypes.RESCUE_FINISH](this.finish);
+        this.finishRescue();
+
+        this[mutationTypes.ACTIONS_FAILURE]();
+        this[mutationTypes.HISTORY_FAILURE]();
+
+        this.$router.push({
+          path: '/actions'
+        });
       }
     },
 
     data() {
       return {
+        finish: {
+          finishNotes: '',
+          rescueId: this.$route.params.id
+        },
         map: null,
         features: {
           rescueId: this.$route.params.id,

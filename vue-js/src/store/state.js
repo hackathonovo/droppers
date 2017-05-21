@@ -22,6 +22,13 @@ const state = {
     data: []
   },
 
+  rescue: {
+    finished: {
+      finishNotes: '',
+      rescueId: null
+    }
+  },
+
   history: {
     isLoaded: false,
     isLoading: false,

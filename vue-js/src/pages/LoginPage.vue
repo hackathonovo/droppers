@@ -41,7 +41,7 @@
           username: this.username,
           password: this.password
         }).then(() => {
-          const nextPage = this.$store.state.session.nextPathName || 'home';
+          const nextPage = this.$store.state.session.nextPathName || 'rescuers';
           this.$router.push({
             name: nextPage
           });
