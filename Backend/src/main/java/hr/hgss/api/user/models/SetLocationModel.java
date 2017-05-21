@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class SetLocationModel {
 
-	private final String id;
-	private final Double longitude;
-	private final Double latitude;
+	private String id;
+	private Double longitude;
+	private Double latitude;
 }
