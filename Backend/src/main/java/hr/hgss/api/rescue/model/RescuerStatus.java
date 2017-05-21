@@ -14,11 +14,15 @@ public class RescuerStatus {
 
 	private String rescuerId;
 	private String status;
+	private Double longitude;
+	private Double latitude;
 
 	public DBObject toDbObject() {
 		BasicDBObject obj = new BasicDBObject();
 		obj.put("rescuerId", rescuerId);
 		obj.put("status", status);
+		obj.put("longitude", longitude);
+		obj.put("latitude", latitude);
 		return obj;
 	}
 }

@@ -30,4 +30,6 @@ public class Rescue {
 	private Long timestampOfFinish;
 	private String finishNotes;
 	private final Boolean active;
+
+	private List<MessageAndLocation> messages;
 }

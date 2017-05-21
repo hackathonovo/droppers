@@ -6,6 +6,7 @@ import hr.hgss.Util;
 import hr.hgss.api.Keys;
 import hr.hgss.api.rescue.model.AddAreasModel;
 import hr.hgss.api.rescue.model.Area;
+import hr.hgss.api.rescue.model.MessageAndLocationModel;
 import hr.hgss.api.rescue.model.Rescue;
 import hr.hgss.api.rescue.model.RescueDefineModel;
 import hr.hgss.api.rescue.model.RescuerStatus;
@@ -18,6 +19,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import javax.util.streamex.StreamEx;
@@ -69,9 +71,20 @@ public class RescueService {
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value = "/define", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public Rescue defineRescue(@RequestBody RescueDefineModel model) {
+		Map<String, Location> idToLocation = StreamEx.of(userRepo.findById(model.getRescuers()))
+			.mapToEntry(User::getId, User::getLastKnownLocation)
+			.toMap();
+
 		Rescue rescue = Rescue.builder()
 			.leaderId(model.getLeaderId())
-			.rescuers(StreamEx.of(model.getRescuers()).map(id -> RescuerStatus.builder().rescuerId(id).status("PENDING").build()).collect(Collectors.toList()))
+			.rescuers(StreamEx.of(model.getRescuers()).map(id -> {
+				RescuerStatus.RescuerStatusBuilder builder = RescuerStatus.builder().rescuerId(id).status("PENDING");
+				Location location = idToLocation.get(id);
+				if (location != null) {
+					builder.longitude(location.getCoordinates().get(0)).latitude(location.getCoordinates().get(1));
+				}
+				return builder.build();
+			}).collect(Collectors.toList()))
 			.baseLocation(new Location("Point", Arrays.asList(model.getLongitudeOfBase(), model.getLatitudeOfBase())))
 			.lastKnownLocationOfPerson(new Location("Point", Arrays.asList(model.getLongitudeOfInjured(), model.getLatitudeOfInjured())))
 			.description(model.getDescription())
@@ -122,11 +135,11 @@ public class RescueService {
 
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value = "/add_areas", method = RequestMethod.POST)
-	public Rescue defineAreas(@RequestBody AddAreasModel model, HttpServletResponse response) {
+	public void defineAreas(@RequestBody AddAreasModel model, HttpServletResponse response) {
 		Rescue one = repo.findOne(model.getRescueId());
 		if (one == null) {
 			response.setStatus(HttpStatus.NOT_FOUND.value());
-			return null;
+			return;
 		}
 
 		List<Area> areas = one.getAreas();
@@ -143,7 +156,21 @@ public class RescueService {
 			new BasicUpdate(obj),
 			Rescue.class
 		);
-		return repo.findOne(model.getRescueId());
 	}
 
+	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
+	@RequestMapping(value ="/add_message", method = RequestMethod.POST)
+	public void addMessageAndLocation(@RequestBody MessageAndLocationModel model) {
+		BasicDBObject obj = new BasicDBObject();
+		obj.put("rescuerId", model.getRescuerId());
+		obj.put("message", model.getMessage());
+
+		Util.ifNotNull(model.getLongitude(), longitude -> obj.put("longitude", longitude));
+		Util.ifNotNull(model.getLatitude(), lat -> obj.put("latitude", lat));
+		rescueOperations.updateFirst(
+			Query.query(Criteria.where("_id").is(model.getRescueId())),
+			Update.update("$push", new BasicDBObject("messages", obj)),
+			Rescue.class
+		);
+	}
 }
