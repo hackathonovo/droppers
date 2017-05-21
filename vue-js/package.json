@@ -7,6 +7,7 @@
     "build": "NODE_ENV='development' node_modules/.bin/webpack --progress --colors"
   },
   "dependencies": {
+    "lodash.orderby": "^4.6.0",
     "media-blender": "^2.1.0",
     "normalize.css": "^6.0.0",
     "qs": "^6.4.0",

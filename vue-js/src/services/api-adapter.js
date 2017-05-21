@@ -1,13 +1,14 @@
 import request from 'services/request';
 
-const API_NAMESPACE = 'api/v1';
+const API_DOMAIN = 'http://192.168.201.43:8080';
+const API_NAMESPACE = `${API_DOMAIN}/api/v1`;
 const RESPONSE_AUTHORIZATION_TOKEN = 'X-Authorization-Token';
-const REQUEST_AUTHORIZATION_TOKEN = 'Authorization';
+const REQUEST_AUTHORIZATION_TOKEN = 'X-Authorization-Token';
 
 class ApiAdapter {
   get authHeaders() {
     return {
-      [REQUEST_AUTHORIZATION_TOKEN]: `Bearer ${this.token}`
+      [REQUEST_AUTHORIZATION_TOKEN]: `${this.token}`
     };
   }
 
@@ -26,34 +27,85 @@ class ApiAdapter {
     });
   }
 
-  login({email, password}) {
+  login({username, password}) {
     const data = {
-      email,
+      username,
       password
     };
-    return Promise.resolve(() => {
+
+    return request({
+      url: `${API_NAMESPACE}/users/login`,
+      method: 'post',
+      mode: 'no-cors',
+      headers: this.authHeaders,
+      data
+    }).then((response) => {
       return {
-        user: 'mjanjic',
-        token: 'jf3489fi'
+        user: response.data,
+        token: response.data.accessToken
       };
     });
-
-    // TODO uncomment when api auth is done
-
-    // return request({
-    //   url: `${API_NAMESPACE}/users/sessions`,
-    //   method: 'post',
-    //   data
-    // }).then((response) => {
-    //   return {
-    //     user: response.data,
-    //     token: response.headers.get(RESPONSE_AUTHORIZATION_TOKEN)
-    //   };
-    // });
   }
 
   currentUser() {
-    const url = `${API_NAMESPACE}/users/sessions`;
+    const url = `${API_NAMESPACE}/users/login`;
+    return this.get(url);
+  }
+
+  fetchRescuers() {
+    const url = `${API_NAMESPACE}/users/`;
+    return this.get(url);
+  }
+
+  fetchRescuerByID(id) {
+    const url = `${API_NAMESPACE}/users/${id}`;
+    return this.get(url);
+  }
+
+  updateRescuer({data}) {
+    return request({
+      url: `${API_NAMESPACE}/users/${data.id}`,
+      method: 'put',
+      headers: this.authHeaders,
+      data
+    }).then(({response}) => {
+      return response;
+    });
+  }
+
+  sendRescuer(data) {
+    return request({
+      url: `${API_NAMESPACE}/users/register`,
+      method: 'post',
+      headers: this.authHeaders,
+      data
+    });
+  }
+
+  patchRescuer(data) {
+    return request({
+      url: `${API_NAMESPACE}/users/update`,
+      method: 'post',
+      headers: this.authHeaders,
+      data
+    });
+  }
+
+  // AREA
+
+  sendArea(data) {
+    return request({
+      url: `${API_NAMESPACE}/rescue/add_areas`,
+      method: 'post',
+      headers: this.authHeaders,
+      data
+    });
+  }
+
+
+  // actions
+  fetchActions() {
+    const url = `${API_NAMESPACE}/rescue`;
     return this.get(url);
   }
 }

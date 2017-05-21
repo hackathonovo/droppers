@@ -4,18 +4,18 @@
       <div class="md-title">Login</div>
     </md-card-header-text>
     <md-card-content>
-      <form novalidate @submit="loginSubmit">
+      <form novalidate @submit.prevent="loginSubmit">
         <md-input-container :class="{'md-input-invalid': invalidLogin}">
           <label>Username</label>
-          <md-input></md-input>
+          <md-input v-model="username"></md-input>
         </md-input-container>
 
         <md-input-container :class="{'md-input-invalid': invalidLogin}">
           <label>Password</label>
-          <md-input type="password"></md-input>
+          <md-input v-model="password" type="password"></md-input>
           <span v-show="invalidLogin" class="md-error">Username or password incorrect</span>
         </md-input-container>
-        <md-button class="md-warn" type="submit">Submit</md-button>
+        <md-button class="md-warn md-raised" type="submit">Submit</md-button>
       </form>
     </md-card-content>
   </md-card>
@@ -38,10 +38,10 @@
         this.invalidLogin = false;
 
         this.login({
-          email: this.email,
+          username: this.username,
           password: this.password
         }).then(() => {
-          const nextPage = 'home';
+          const nextPage = this.$store.state.session.nextPathName || 'home';
           this.$router.push({
             name: nextPage
           });
@@ -52,7 +52,7 @@
     },
     data() {
       return {
-        email: '',
+        username: '',
         password: '',
         invalidLogin: false
       };
