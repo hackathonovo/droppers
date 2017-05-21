@@ -16,6 +16,7 @@ public class RescuerStatus {
 	private String status;
 	private Double longitude;
 	private Double latitude;
+	private Integer assignedArea;
 
 	public DBObject toDbObject() {
 		BasicDBObject obj = new BasicDBObject();
@@ -23,6 +24,7 @@ public class RescuerStatus {
 		obj.put("status", status);
 		obj.put("longitude", longitude);
 		obj.put("latitude", latitude);
+		obj.put("assignedArea", assignedArea);
 		return obj;
 	}
 }
