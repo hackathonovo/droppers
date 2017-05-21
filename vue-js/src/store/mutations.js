@@ -110,4 +110,9 @@ export default {
     state.history.isLoading = false;
     state.history.isLoaded = false;
   },
+
+  [mutationTypes.RESCUE_FINISH](state, data) {
+    state.rescue.finished.finishNotes = data.finishNotes;
+    state.rescue.finished.rescueId = data.rescueId;
+  },
 };

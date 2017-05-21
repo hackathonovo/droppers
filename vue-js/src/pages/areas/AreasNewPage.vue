@@ -2,6 +2,14 @@
   <div>
     <div id="map" :class="$style.map"></div>
     <md-button class="md-warn md-raised" @click.native="onSave">Save</md-button>
+
+    <md-card>
+      <md-input-container>
+        <label>Finish notes</label>
+        <md-textarea v-model="finish.finishNotes"></md-textarea>
+      </md-input-container>
+    <md-button class="md-warn md-raised" @click.native="onFinish">Finish</md-button>
+    </md-card>
   </div>
 </template>
 
@@ -20,11 +28,13 @@
 
     methods: {
       ...mapMutations([
-        mutationTypes.AREA_DETAIL_SET
+        mutationTypes.AREA_DETAIL_SET,
+        mutationTypes.RESCUE_FINISH
       ]),
 
       ...mapActions([
-        'sendAreaDetails'
+        'sendAreaDetails',
+        'finishRescue'
       ]),
 
       initMap() {
@@ -110,9 +120,9 @@
         });
       },
 
-      onFInish() {
-        this[mutationTypes.AREA_DETAIL_SET](this.features);
-        this.sendAreaDetails();
+      onFinish() {
+        this[mutationTypes.RESCUE_FINISH](this.finish);
+        this.finishRescue();
 
         this.$router.push({
           path: '/actions'
@@ -122,6 +132,10 @@
 
     data() {
       return {
+        finish: {
+          finishNotes: '',
+          rescueId: this.$route.params.id
+        },
         map: null,
         features: {
           rescueId: this.$route.params.id,

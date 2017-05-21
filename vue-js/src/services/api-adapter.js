@@ -114,6 +114,16 @@ class ApiAdapter {
     const url = `${API_NAMESPACE}/rescue`;
     return this.get(url, {active: false});
   }
+
+  // rescue finish
+  finishRescue(data) {
+    return request({
+      url: `${API_NAMESPACE}/rescue/finish`,
+      method: 'post',
+      headers: this.authHeaders,
+      data
+    });
+  }
 }
 
 export default new ApiAdapter();

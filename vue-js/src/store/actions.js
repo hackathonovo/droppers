@@ -110,6 +110,16 @@ export default function({apiAdapter, localStorage}) {
         commit(mutationTypes.HISTORY_FAILURE);
         throw error;
       });
+    },
+
+    finishRescue({commit, state}) {
+      apiAdapter.finishRescue(state.rescue.finished).then((data) => {
+        commit(mutationTypes.RESCUE_FINISH, data);
+        commit(mutationTypes.ACTIONS_FAILURE);
+        commit(mutationTypes.HISTORY_FAILURE);
+      }).catch((error) => {
+        throw error;
+      });
     }
   };
 }
