@@ -186,7 +186,7 @@ public class UserService {
 			String key = setLocationModel.getId();
 			String value = System.currentTimeMillis() + "_" + setLocationModel.getLongitude() + "_" + setLocationModel.getLatitude();
 			jedis.lpush(key, value);
-			jedis.ltrim(key, 0, 100);
+			jedis.ltrim(key, 0, 1000);
 		};
 
 		return userRepo.findOne(setLocationModel.getId());
