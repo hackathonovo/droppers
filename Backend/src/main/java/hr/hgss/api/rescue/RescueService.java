@@ -16,6 +16,7 @@ import hr.hgss.api.user.models.Location;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
@@ -69,28 +70,30 @@ public class RescueService {
 	@RequestMapping(value = "/define", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public Rescue defineRescue(@RequestBody RescueDefineModel model) {
 		Rescue rescue = Rescue.builder()
-			.injuredContact(model.getInjuredContact())
 			.leaderId(model.getLeaderId())
-			.rescuersId(StreamEx.of(model.getRescuersId()).map(id -> RescuerStatus.builder().rescuerId(id).status("PENDING").build()).collect(Collectors.toList()))
+			.rescuers(StreamEx.of(model.getRescuers()).map(id -> RescuerStatus.builder().rescuerId(id).status("PENDING").build()).collect(Collectors.toList()))
 			.baseLocation(new Location("Point", Arrays.asList(model.getLongitudeOfBase(), model.getLatitudeOfBase())))
 			.lastKnownLocationOfPerson(new Location("Point", Arrays.asList(model.getLongitudeOfInjured(), model.getLatitudeOfInjured())))
 			.description(model.getDescription())
-			.injuredContact(model.getInjuredContact())
-			.pearsonWhoCalledContact(model.getPearsonWhoCalledContact())
+			.contactOfInjuredPerson(model.getContactOfInjuredPerson())
+			.contactOfPersonWhoCalled(model.getContactOfPersonWhoCalled())
+			.timestampOfRescue(System.currentTimeMillis())
 			.active(true)
 			.build();
 
-		List<User> all = userRepo.findById(model.getRescuersId());
+		List<User> all = userRepo.findById(model.getRescuers());
 		Rescue insert = repo.insert(rescue);
 		if (all != null) {
 			log.info("Sending to push notif: " + all);
-			all.forEach(user -> // Notify users.
+			all.forEach(user -> {
+				HashMap<String, String> notifParams = new HashMap<>();
+				notifParams.put("rescue_id", user.getId());
 				Util.ifNotNull(user.getIosTokens(),
 					tokens -> tokens.forEach(
-						token -> pushNotifSender.sendPushNotification("ALERT", model.getDescription(), insert.getId(), token)
+						token -> pushNotifSender.sendPushNotification("ALERT", model.getDescription(),  notifParams, insert.getId())
 					)
-				)
-			);
+				);
+			});
 		}
 		return insert;
 	}
@@ -99,7 +102,7 @@ public class RescueService {
 	@RequestMapping(value ="/set_status", method = RequestMethod.POST)
 	public Rescue setRescuerStatus(@RequestBody SetRescuerStatusModel model) {
 		Rescue one = repo.findOne(model.getRescueId());
-		List<RescuerStatus> rescuerStatuses = StreamEx.of(one.getRescuersId())
+		List<RescuerStatus> rescuerStatuses = StreamEx.of(one.getRescuers())
 			.map(rescuerStatus -> {
 				if (rescuerStatus.getRescuerId().equals(model.getRescuerId())) {
 					return RescuerStatus.builder().rescuerId(model.getRescuerId()).status(model.getStatus()).build();
@@ -109,11 +112,11 @@ public class RescueService {
 
 		rescueOperations.updateFirst(
 			Query.query(Criteria.where("_id").is(model.getRescueId())),
-			Update.update("rescuersId", StreamEx.of(rescuerStatuses).map(RescuerStatus::toDbObject).toList()),
+			Update.update("rescuers", StreamEx.of(rescuerStatuses).map(RescuerStatus::toDbObject).toList()),
 			Rescue.class
 		);
 
-		one.setRescuersId(rescuerStatuses);
+		one.setRescuers(rescuerStatuses);
 		return one;
 	}
 
@@ -142,6 +145,5 @@ public class RescueService {
 		);
 		return repo.findOne(model.getRescueId());
 	}
-
 
 }

@@ -20,9 +20,9 @@ public class Rescue {
 	@Indexed(unique = false, background = true)
 	private String leaderId;
 	private String description;
-	private List<RescuerStatus> rescuersId;
-	private String injuredContact;
-	private String pearsonWhoCalledContact;
+	private List<RescuerStatus> rescuers;
+	private String contactOfInjuredPerson;
+	private String contactOfPersonWhoCalled;
 	private Location lastKnownLocationOfPerson;
 	private Location baseLocation;
 	private List<Area> areas;

@@ -3,6 +3,8 @@ package hr.hgss;
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.apns.PayloadBuilder;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +15,7 @@ import org.springframework.stereotype.Component;
 @Component @Log
 public class PushNotifSender {
 
-	public void sendPushNotification(String title, String body, String rescueId, String iosToken) {
-		log.info("Sending " + rescueId + " to " + iosToken);
+	public void sendPushNotification(String title, String body, Map<String, String> notifParams, String iosToken) {
 		ApnsService serviceDev = APNS.newService()
 			.withCert("./certs/Certificates.p12", "abc")
 			.withSandboxDestination()
@@ -25,8 +26,14 @@ public class PushNotifSender {
 		payload.alertBody(body);
 		payload.alertTitle(title);
 		payload.sound("default");
-		payload.customField("rescue_id", rescueId);
+		notifParams.forEach(payload::customField);
 		serviceDev.push(iosToken, payload.build());
 		log.info("Sent notif.");
+	}
+
+	public static void main(String[] args) {
+		PushNotifSender pushNotifSender = new PushNotifSender();
+		HashMap<String, String> objectObjectHashMap = new HashMap<>();
+		pushNotifSender.sendPushNotification("abc", "body", objectObjectHashMap, "1e2d9d0ddf2df86f0594b932394bb5ba2860852d566997a60940108ee80d421a");
 	}
 }
