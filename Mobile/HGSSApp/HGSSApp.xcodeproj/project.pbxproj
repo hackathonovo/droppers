@@ -1,0 +1,792 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CDA888351ECF359F00BF04EB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA888341ECF359F00BF04EB /* main.m */; };
+		CDA888381ECF359F00BF04EB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA888371ECF359F00BF04EB /* AppDelegate.m */; };
+		CDA8883B1ECF359F00BF04EB /* ManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA8883A1ECF359F00BF04EB /* ManagerViewController.m */; };
+		CDA8883E1ECF359F00BF04EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDA8883C1ECF359F00BF04EB /* Main.storyboard */; };
+		CDA888401ECF359F00BF04EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDA8883F1ECF359F00BF04EB /* Assets.xcassets */; };
+		CDA888431ECF359F00BF04EB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDA888411ECF359F00BF04EB /* LaunchScreen.storyboard */; };
+		CDA8884E1ECF359F00BF04EB /* HGSSAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA8884D1ECF359F00BF04EB /* HGSSAppTests.m */; };
+		CDA888591ECF359F00BF04EB /* HGSSAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA888581ECF359F00BF04EB /* HGSSAppUITests.m */; };
+		CDA888691ECF3D2400BF04EB /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA888681ECF3D2400BF04EB /* SWRevealViewController.m */; };
+		CDA8886C1ECF3EE400BF04EB /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA8886B1ECF3EE400BF04EB /* MapViewController.m */; };
+		CDA8886F1ECF3F4A00BF04EB /* MenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA8886E1ECF3F4A00BF04EB /* MenuTableViewController.m */; };
+		CDA888721ECF401800BF04EB /* reveal-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CDA888701ECF401800BF04EB /* reveal-icon@2x.png */; };
+		CDA888731ECF401800BF04EB /* reveal-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CDA888711ECF401800BF04EB /* reveal-icon.png */; };
+		CDA888761ECF432700BF04EB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA888751ECF432700BF04EB /* MapKit.framework */; };
+		CDCA07381ED05778000FDA3C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07371ED05778000FDA3C /* LoginViewController.m */; };
+		CDCA073E1ED05DC3000FDA3C /* HttpHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA073D1ED05DC3000FDA3C /* HttpHelper.m */; };
+		CDCA07411ED06396000FDA3C /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07401ED06396000FDA3C /* SSKeychain.m */; };
+		CDCA07451ED07B08000FDA3C /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07441ED07B08000FDA3C /* UserModel.m */; };
+		CDCA07481ED0876A000FDA3C /* CreateActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07471ED0876A000FDA3C /* CreateActionViewController.m */; };
+		CDCA074D1ED09DD8000FDA3C /* UIColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA074C1ED09DD8000FDA3C /* UIColor+Additions.m */; };
+		CDCA07531ED0B5B8000FDA3C /* SearchDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07521ED0B5B8000FDA3C /* SearchDetailsViewController.m */; };
+		CDCA07571ED0BEA1000FDA3C /* PickTeamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07561ED0BEA1000FDA3C /* PickTeamViewController.m */; };
+		CDCA075B1ED0C1C8000FDA3C /* MultipleChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07591ED0C1C8000FDA3C /* MultipleChoiceViewController.m */; };
+		CDCA075C1ED0C1C8000FDA3C /* MultipleChoiceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDCA075A1ED0C1C8000FDA3C /* MultipleChoiceViewController.xib */; };
+		CDCA07641ED0D361000FDA3C /* ActionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07631ED0D361000FDA3C /* ActionDetailViewController.m */; };
+		CDCA07691ED0D9A2000FDA3C /* LastLocationMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07681ED0D9A2000FDA3C /* LastLocationMapViewController.m */; };
+		CDCA076C1ED0D9B2000FDA3C /* BaseLocationMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA076B1ED0D9B2000FDA3C /* BaseLocationMapViewController.m */; };
+		CDCA076F1ED0DA7A000FDA3C /* ActionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA076E1ED0DA7A000FDA3C /* ActionModel.m */; };
+		CDCA07721ED0E3C8000FDA3C /* PersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07711ED0E3C8000FDA3C /* PersonModel.m */; };
+		CDCA07751ED0EE28000FDA3C /* TeamPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07741ED0EE28000FDA3C /* TeamPickerViewController.m */; };
+		CDCA077C1ED0F8BD000FDA3C /* PersonTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA077B1ED0F8BD000FDA3C /* PersonTableViewCell.m */; };
+		CDCA07821ED10832000FDA3C /* MainMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07811ED10832000FDA3C /* MainMapViewController.m */; };
+		CDCA07851ED11A2F000FDA3C /* LocationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07841ED11A2F000FDA3C /* LocationModel.m */; };
+		CDCA07881ED13F06000FDA3C /* ActiveActionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA07871ED13F05000FDA3C /* ActiveActionModel.m */; };
+		CDCA078B1ED14019000FDA3C /* AreaModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA078A1ED14019000FDA3C /* AreaModel.m */; };
+		CDCA078E1ED14281000FDA3C /* SecondLocationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCA078D1ED14281000FDA3C /* SecondLocationModel.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CDA8884A1ECF359F00BF04EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDA888281ECF359F00BF04EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CDA8882F1ECF359F00BF04EB;
+			remoteInfo = HGSSApp;
+		};
+		CDA888551ECF359F00BF04EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDA888281ECF359F00BF04EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CDA8882F1ECF359F00BF04EB;
+			remoteInfo = HGSSApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CDA888301ECF359F00BF04EB /* HGSSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HGSSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDA888341ECF359F00BF04EB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CDA888361ECF359F00BF04EB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CDA888371ECF359F00BF04EB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CDA888391ECF359F00BF04EB /* ManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManagerViewController.h; sourceTree = "<group>"; };
+		CDA8883A1ECF359F00BF04EB /* ManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManagerViewController.m; sourceTree = "<group>"; };
+		CDA8883D1ECF359F00BF04EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CDA8883F1ECF359F00BF04EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CDA888421ECF359F00BF04EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CDA888441ECF359F00BF04EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CDA888491ECF359F00BF04EB /* HGSSAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HGSSAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDA8884D1ECF359F00BF04EB /* HGSSAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HGSSAppTests.m; sourceTree = "<group>"; };
+		CDA8884F1ECF359F00BF04EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CDA888541ECF359F00BF04EB /* HGSSAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HGSSAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDA888581ECF359F00BF04EB /* HGSSAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HGSSAppUITests.m; sourceTree = "<group>"; };
+		CDA8885A1ECF359F00BF04EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CDA888671ECF3D2400BF04EB /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		CDA888681ECF3D2400BF04EB /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		CDA8886A1ECF3EE400BF04EB /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		CDA8886B1ECF3EE400BF04EB /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		CDA8886D1ECF3F4A00BF04EB /* MenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuTableViewController.h; sourceTree = "<group>"; };
+		CDA8886E1ECF3F4A00BF04EB /* MenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuTableViewController.m; sourceTree = "<group>"; };
+		CDA888701ECF401800BF04EB /* reveal-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reveal-icon@2x.png"; sourceTree = "<group>"; };
+		CDA888711ECF401800BF04EB /* reveal-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reveal-icon.png"; sourceTree = "<group>"; };
+		CDA888751ECF432700BF04EB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		CDCA07361ED05778000FDA3C /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		CDCA07371ED05778000FDA3C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		CDCA073C1ED05DC3000FDA3C /* HttpHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpHelper.h; sourceTree = "<group>"; };
+		CDCA073D1ED05DC3000FDA3C /* HttpHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpHelper.m; sourceTree = "<group>"; };
+		CDCA073F1ED06396000FDA3C /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
+		CDCA07401ED06396000FDA3C /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
+		CDCA07431ED07B08000FDA3C /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
+		CDCA07441ED07B08000FDA3C /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		CDCA07461ED0876A000FDA3C /* CreateActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateActionViewController.h; sourceTree = "<group>"; };
+		CDCA07471ED0876A000FDA3C /* CreateActionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateActionViewController.m; sourceTree = "<group>"; };
+		CDCA074B1ED09DD8000FDA3C /* UIColor+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Additions.h"; path = "../UIColor+Additions.h"; sourceTree = "<group>"; };
+		CDCA074C1ED09DD8000FDA3C /* UIColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Additions.m"; path = "../UIColor+Additions.m"; sourceTree = "<group>"; };
+		CDCA07511ED0B5B8000FDA3C /* SearchDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchDetailsViewController.h; sourceTree = "<group>"; };
+		CDCA07521ED0B5B8000FDA3C /* SearchDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchDetailsViewController.m; sourceTree = "<group>"; };
+		CDCA07551ED0BEA1000FDA3C /* PickTeamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickTeamViewController.h; sourceTree = "<group>"; };
+		CDCA07561ED0BEA1000FDA3C /* PickTeamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickTeamViewController.m; sourceTree = "<group>"; };
+		CDCA07581ED0C1C8000FDA3C /* MultipleChoiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultipleChoiceViewController.h; sourceTree = "<group>"; };
+		CDCA07591ED0C1C8000FDA3C /* MultipleChoiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultipleChoiceViewController.m; sourceTree = "<group>"; };
+		CDCA075A1ED0C1C8000FDA3C /* MultipleChoiceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultipleChoiceViewController.xib; sourceTree = "<group>"; };
+		CDCA07621ED0D361000FDA3C /* ActionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionDetailViewController.h; sourceTree = "<group>"; };
+		CDCA07631ED0D361000FDA3C /* ActionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionDetailViewController.m; sourceTree = "<group>"; };
+		CDCA07651ED0D3EA000FDA3C /* HGSSApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HGSSApp.entitlements; sourceTree = "<group>"; };
+		CDCA07671ED0D9A2000FDA3C /* LastLocationMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastLocationMapViewController.h; sourceTree = "<group>"; };
+		CDCA07681ED0D9A2000FDA3C /* LastLocationMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastLocationMapViewController.m; sourceTree = "<group>"; };
+		CDCA076A1ED0D9B2000FDA3C /* BaseLocationMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseLocationMapViewController.h; sourceTree = "<group>"; };
+		CDCA076B1ED0D9B2000FDA3C /* BaseLocationMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseLocationMapViewController.m; sourceTree = "<group>"; };
+		CDCA076D1ED0DA7A000FDA3C /* ActionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionModel.h; sourceTree = "<group>"; };
+		CDCA076E1ED0DA7A000FDA3C /* ActionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionModel.m; sourceTree = "<group>"; };
+		CDCA07701ED0E3C8000FDA3C /* PersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonModel.h; sourceTree = "<group>"; };
+		CDCA07711ED0E3C8000FDA3C /* PersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonModel.m; sourceTree = "<group>"; };
+		CDCA07731ED0EE28000FDA3C /* TeamPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeamPickerViewController.h; sourceTree = "<group>"; };
+		CDCA07741ED0EE28000FDA3C /* TeamPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeamPickerViewController.m; sourceTree = "<group>"; };
+		CDCA077A1ED0F8BD000FDA3C /* PersonTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonTableViewCell.h; sourceTree = "<group>"; };
+		CDCA077B1ED0F8BD000FDA3C /* PersonTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonTableViewCell.m; sourceTree = "<group>"; };
+		CDCA07801ED10832000FDA3C /* MainMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMapViewController.h; sourceTree = "<group>"; };
+		CDCA07811ED10832000FDA3C /* MainMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMapViewController.m; sourceTree = "<group>"; };
+		CDCA07831ED11A2F000FDA3C /* LocationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationModel.h; sourceTree = "<group>"; };
+		CDCA07841ED11A2F000FDA3C /* LocationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationModel.m; sourceTree = "<group>"; };
+		CDCA07861ED13F05000FDA3C /* ActiveActionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveActionModel.h; sourceTree = "<group>"; };
+		CDCA07871ED13F05000FDA3C /* ActiveActionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveActionModel.m; sourceTree = "<group>"; };
+		CDCA07891ED14019000FDA3C /* AreaModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AreaModel.h; sourceTree = "<group>"; };
+		CDCA078A1ED14019000FDA3C /* AreaModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AreaModel.m; sourceTree = "<group>"; };
+		CDCA078C1ED14281000FDA3C /* SecondLocationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondLocationModel.h; sourceTree = "<group>"; };
+		CDCA078D1ED14281000FDA3C /* SecondLocationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondLocationModel.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CDA8882D1ECF359F00BF04EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDA888761ECF432700BF04EB /* MapKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDA888461ECF359F00BF04EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDA888511ECF359F00BF04EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CDA888271ECF359F00BF04EB = {
+			isa = PBXGroup;
+			children = (
+				CDA888321ECF359F00BF04EB /* HGSSApp */,
+				CDA8884C1ECF359F00BF04EB /* HGSSAppTests */,
+				CDA888571ECF359F00BF04EB /* HGSSAppUITests */,
+				CDA888661ECF3D2400BF04EB /* SWRevealViewController */,
+				CDA888311ECF359F00BF04EB /* Products */,
+				CDA888741ECF432600BF04EB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CDA888311ECF359F00BF04EB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CDA888301ECF359F00BF04EB /* HGSSApp.app */,
+				CDA888491ECF359F00BF04EB /* HGSSAppTests.xctest */,
+				CDA888541ECF359F00BF04EB /* HGSSAppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CDA888321ECF359F00BF04EB /* HGSSApp */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA07651ED0D3EA000FDA3C /* HGSSApp.entitlements */,
+				CDCA07611ED0D341000FDA3C /* ViewControllers */,
+				CDCA075D1ED0C1D2000FDA3C /* popup */,
+				CDCA07501ED0B58C000FDA3C /* potraga */,
+				CDCA07421ED07AD6000FDA3C /* model */,
+				CDCA07391ED05CEA000FDA3C /* help */,
+				CDA888361ECF359F00BF04EB /* AppDelegate.h */,
+				CDA888371ECF359F00BF04EB /* AppDelegate.m */,
+				CDA888391ECF359F00BF04EB /* ManagerViewController.h */,
+				CDA8883A1ECF359F00BF04EB /* ManagerViewController.m */,
+				CDA8883C1ECF359F00BF04EB /* Main.storyboard */,
+				CDA8883F1ECF359F00BF04EB /* Assets.xcassets */,
+				CDA888411ECF359F00BF04EB /* LaunchScreen.storyboard */,
+				CDA888441ECF359F00BF04EB /* Info.plist */,
+				CDA888331ECF359F00BF04EB /* Supporting Files */,
+				CDA8886D1ECF3F4A00BF04EB /* MenuTableViewController.h */,
+				CDA8886E1ECF3F4A00BF04EB /* MenuTableViewController.m */,
+				CDCA07461ED0876A000FDA3C /* CreateActionViewController.h */,
+				CDCA07471ED0876A000FDA3C /* CreateActionViewController.m */,
+				CDCA07551ED0BEA1000FDA3C /* PickTeamViewController.h */,
+				CDCA07561ED0BEA1000FDA3C /* PickTeamViewController.m */,
+			);
+			path = HGSSApp;
+			sourceTree = "<group>";
+		};
+		CDA888331ECF359F00BF04EB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CDA888701ECF401800BF04EB /* reveal-icon@2x.png */,
+				CDA888711ECF401800BF04EB /* reveal-icon.png */,
+				CDA888341ECF359F00BF04EB /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CDA8884C1ECF359F00BF04EB /* HGSSAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				CDA8884D1ECF359F00BF04EB /* HGSSAppTests.m */,
+				CDA8884F1ECF359F00BF04EB /* Info.plist */,
+			);
+			path = HGSSAppTests;
+			sourceTree = "<group>";
+		};
+		CDA888571ECF359F00BF04EB /* HGSSAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CDA888581ECF359F00BF04EB /* HGSSAppUITests.m */,
+				CDA8885A1ECF359F00BF04EB /* Info.plist */,
+			);
+			path = HGSSAppUITests;
+			sourceTree = "<group>";
+		};
+		CDA888661ECF3D2400BF04EB /* SWRevealViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CDA888671ECF3D2400BF04EB /* SWRevealViewController.h */,
+				CDA888681ECF3D2400BF04EB /* SWRevealViewController.m */,
+			);
+			path = SWRevealViewController;
+			sourceTree = "<group>";
+		};
+		CDA888741ECF432600BF04EB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CDA888751ECF432700BF04EB /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CDCA07391ED05CEA000FDA3C /* help */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA074B1ED09DD8000FDA3C /* UIColor+Additions.h */,
+				CDCA074C1ED09DD8000FDA3C /* UIColor+Additions.m */,
+				CDCA073C1ED05DC3000FDA3C /* HttpHelper.h */,
+				CDCA073D1ED05DC3000FDA3C /* HttpHelper.m */,
+				CDCA073F1ED06396000FDA3C /* SSKeychain.h */,
+				CDCA07401ED06396000FDA3C /* SSKeychain.m */,
+			);
+			name = help;
+			sourceTree = "<group>";
+		};
+		CDCA07421ED07AD6000FDA3C /* model */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA07431ED07B08000FDA3C /* UserModel.h */,
+				CDCA07441ED07B08000FDA3C /* UserModel.m */,
+				CDCA076D1ED0DA7A000FDA3C /* ActionModel.h */,
+				CDCA076E1ED0DA7A000FDA3C /* ActionModel.m */,
+				CDCA07701ED0E3C8000FDA3C /* PersonModel.h */,
+				CDCA07711ED0E3C8000FDA3C /* PersonModel.m */,
+				CDCA07831ED11A2F000FDA3C /* LocationModel.h */,
+				CDCA07841ED11A2F000FDA3C /* LocationModel.m */,
+				CDCA07861ED13F05000FDA3C /* ActiveActionModel.h */,
+				CDCA07871ED13F05000FDA3C /* ActiveActionModel.m */,
+				CDCA07891ED14019000FDA3C /* AreaModel.h */,
+				CDCA078A1ED14019000FDA3C /* AreaModel.m */,
+				CDCA078C1ED14281000FDA3C /* SecondLocationModel.h */,
+				CDCA078D1ED14281000FDA3C /* SecondLocationModel.m */,
+			);
+			name = model;
+			sourceTree = "<group>";
+		};
+		CDCA07501ED0B58C000FDA3C /* potraga */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA07511ED0B5B8000FDA3C /* SearchDetailsViewController.h */,
+				CDCA07521ED0B5B8000FDA3C /* SearchDetailsViewController.m */,
+			);
+			name = potraga;
+			sourceTree = "<group>";
+		};
+		CDCA075D1ED0C1D2000FDA3C /* popup */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA07581ED0C1C8000FDA3C /* MultipleChoiceViewController.h */,
+				CDCA07591ED0C1C8000FDA3C /* MultipleChoiceViewController.m */,
+				CDCA075A1ED0C1C8000FDA3C /* MultipleChoiceViewController.xib */,
+			);
+			name = popup;
+			sourceTree = "<group>";
+		};
+		CDCA07611ED0D341000FDA3C /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA07761ED0F70F000FDA3C /* TableViewCells */,
+				CDCA07661ED0D965000FDA3C /* Abstract */,
+				CDCA07621ED0D361000FDA3C /* ActionDetailViewController.h */,
+				CDCA07631ED0D361000FDA3C /* ActionDetailViewController.m */,
+				CDCA07731ED0EE28000FDA3C /* TeamPickerViewController.h */,
+				CDCA07741ED0EE28000FDA3C /* TeamPickerViewController.m */,
+				CDCA07361ED05778000FDA3C /* LoginViewController.h */,
+				CDCA07371ED05778000FDA3C /* LoginViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		CDCA07661ED0D965000FDA3C /* Abstract */ = {
+			isa = PBXGroup;
+			children = (
+				CDA8886A1ECF3EE400BF04EB /* MapViewController.h */,
+				CDA8886B1ECF3EE400BF04EB /* MapViewController.m */,
+				CDCA07671ED0D9A2000FDA3C /* LastLocationMapViewController.h */,
+				CDCA07681ED0D9A2000FDA3C /* LastLocationMapViewController.m */,
+				CDCA076A1ED0D9B2000FDA3C /* BaseLocationMapViewController.h */,
+				CDCA076B1ED0D9B2000FDA3C /* BaseLocationMapViewController.m */,
+				CDCA07801ED10832000FDA3C /* MainMapViewController.h */,
+				CDCA07811ED10832000FDA3C /* MainMapViewController.m */,
+			);
+			name = Abstract;
+			sourceTree = "<group>";
+		};
+		CDCA07761ED0F70F000FDA3C /* TableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA077A1ED0F8BD000FDA3C /* PersonTableViewCell.h */,
+				CDCA077B1ED0F8BD000FDA3C /* PersonTableViewCell.m */,
+			);
+			name = TableViewCells;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CDA8882F1ECF359F00BF04EB /* HGSSApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDA8885D1ECF359F00BF04EB /* Build configuration list for PBXNativeTarget "HGSSApp" */;
+			buildPhases = (
+				CDA8882C1ECF359F00BF04EB /* Sources */,
+				CDA8882D1ECF359F00BF04EB /* Frameworks */,
+				CDA8882E1ECF359F00BF04EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HGSSApp;
+			productName = HGSSApp;
+			productReference = CDA888301ECF359F00BF04EB /* HGSSApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CDA888481ECF359F00BF04EB /* HGSSAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDA888601ECF359F00BF04EB /* Build configuration list for PBXNativeTarget "HGSSAppTests" */;
+			buildPhases = (
+				CDA888451ECF359F00BF04EB /* Sources */,
+				CDA888461ECF359F00BF04EB /* Frameworks */,
+				CDA888471ECF359F00BF04EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CDA8884B1ECF359F00BF04EB /* PBXTargetDependency */,
+			);
+			name = HGSSAppTests;
+			productName = HGSSAppTests;
+			productReference = CDA888491ECF359F00BF04EB /* HGSSAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CDA888531ECF359F00BF04EB /* HGSSAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDA888631ECF359F00BF04EB /* Build configuration list for PBXNativeTarget "HGSSAppUITests" */;
+			buildPhases = (
+				CDA888501ECF359F00BF04EB /* Sources */,
+				CDA888511ECF359F00BF04EB /* Frameworks */,
+				CDA888521ECF359F00BF04EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CDA888561ECF359F00BF04EB /* PBXTargetDependency */,
+			);
+			name = HGSSAppUITests;
+			productName = HGSSAppUITests;
+			productReference = CDA888541ECF359F00BF04EB /* HGSSAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CDA888281ECF359F00BF04EB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "HGSS-hackathon";
+				TargetAttributes = {
+					CDA8882F1ECF359F00BF04EB = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = UQ456767XG;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
+					CDA888481ECF359F00BF04EB = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = 67Z8CD63L2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = CDA8882F1ECF359F00BF04EB;
+					};
+					CDA888531ECF359F00BF04EB = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = 67Z8CD63L2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = CDA8882F1ECF359F00BF04EB;
+					};
+				};
+			};
+			buildConfigurationList = CDA8882B1ECF359F00BF04EB /* Build configuration list for PBXProject "HGSSApp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CDA888271ECF359F00BF04EB;
+			productRefGroup = CDA888311ECF359F00BF04EB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CDA8882F1ECF359F00BF04EB /* HGSSApp */,
+				CDA888481ECF359F00BF04EB /* HGSSAppTests */,
+				CDA888531ECF359F00BF04EB /* HGSSAppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CDA8882E1ECF359F00BF04EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDA888721ECF401800BF04EB /* reveal-icon@2x.png in Resources */,
+				CDA888431ECF359F00BF04EB /* LaunchScreen.storyboard in Resources */,
+				CDA888401ECF359F00BF04EB /* Assets.xcassets in Resources */,
+				CDA8883E1ECF359F00BF04EB /* Main.storyboard in Resources */,
+				CDCA075C1ED0C1C8000FDA3C /* MultipleChoiceViewController.xib in Resources */,
+				CDA888731ECF401800BF04EB /* reveal-icon.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDA888471ECF359F00BF04EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDA888521ECF359F00BF04EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CDA8882C1ECF359F00BF04EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDCA07881ED13F06000FDA3C /* ActiveActionModel.m in Sources */,
+				CDCA07571ED0BEA1000FDA3C /* PickTeamViewController.m in Sources */,
+				CDCA07411ED06396000FDA3C /* SSKeychain.m in Sources */,
+				CDCA075B1ED0C1C8000FDA3C /* MultipleChoiceViewController.m in Sources */,
+				CDCA078E1ED14281000FDA3C /* SecondLocationModel.m in Sources */,
+				CDCA076C1ED0D9B2000FDA3C /* BaseLocationMapViewController.m in Sources */,
+				CDCA07641ED0D361000FDA3C /* ActionDetailViewController.m in Sources */,
+				CDA8883B1ECF359F00BF04EB /* ManagerViewController.m in Sources */,
+				CDCA07721ED0E3C8000FDA3C /* PersonModel.m in Sources */,
+				CDCA07531ED0B5B8000FDA3C /* SearchDetailsViewController.m in Sources */,
+				CDCA077C1ED0F8BD000FDA3C /* PersonTableViewCell.m in Sources */,
+				CDCA076F1ED0DA7A000FDA3C /* ActionModel.m in Sources */,
+				CDA888381ECF359F00BF04EB /* AppDelegate.m in Sources */,
+				CDA8886C1ECF3EE400BF04EB /* MapViewController.m in Sources */,
+				CDA888351ECF359F00BF04EB /* main.m in Sources */,
+				CDCA074D1ED09DD8000FDA3C /* UIColor+Additions.m in Sources */,
+				CDCA07481ED0876A000FDA3C /* CreateActionViewController.m in Sources */,
+				CDCA078B1ED14019000FDA3C /* AreaModel.m in Sources */,
+				CDCA07381ED05778000FDA3C /* LoginViewController.m in Sources */,
+				CDCA07451ED07B08000FDA3C /* UserModel.m in Sources */,
+				CDA8886F1ECF3F4A00BF04EB /* MenuTableViewController.m in Sources */,
+				CDA888691ECF3D2400BF04EB /* SWRevealViewController.m in Sources */,
+				CDCA07751ED0EE28000FDA3C /* TeamPickerViewController.m in Sources */,
+				CDCA07851ED11A2F000FDA3C /* LocationModel.m in Sources */,
+				CDCA07691ED0D9A2000FDA3C /* LastLocationMapViewController.m in Sources */,
+				CDCA073E1ED05DC3000FDA3C /* HttpHelper.m in Sources */,
+				CDCA07821ED10832000FDA3C /* MainMapViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDA888451ECF359F00BF04EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDA8884E1ECF359F00BF04EB /* HGSSAppTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDA888501ECF359F00BF04EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDA888591ECF359F00BF04EB /* HGSSAppUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CDA8884B1ECF359F00BF04EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CDA8882F1ECF359F00BF04EB /* HGSSApp */;
+			targetProxy = CDA8884A1ECF359F00BF04EB /* PBXContainerItemProxy */;
+		};
+		CDA888561ECF359F00BF04EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CDA8882F1ECF359F00BF04EB /* HGSSApp */;
+			targetProxy = CDA888551ECF359F00BF04EB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CDA8883C1ECF359F00BF04EB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CDA8883D1ECF359F00BF04EB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CDA888411ECF359F00BF04EB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CDA888421ECF359F00BF04EB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CDA8885B1ECF359F00BF04EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CDA8885C1ECF359F00BF04EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CDA8885E1ECF359F00BF04EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HGSSApp/HGSSApp.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = UQ456767XG;
+				INFOPLIST_FILE = HGSSApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = hr.hgss.in2.hackathon.HGSSApp03;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+			};
+			name = Debug;
+		};
+		CDA8885F1ECF359F00BF04EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HGSSApp/HGSSApp.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = UQ456767XG;
+				INFOPLIST_FILE = HGSSApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = hr.hgss.in2.hackathon.HGSSApp03;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+			};
+			name = Release;
+		};
+		CDA888611ECF359F00BF04EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 67Z8CD63L2;
+				INFOPLIST_FILE = HGSSAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = hr.hgss.HGSSAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HGSSApp.app/HGSSApp";
+			};
+			name = Debug;
+		};
+		CDA888621ECF359F00BF04EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 67Z8CD63L2;
+				INFOPLIST_FILE = HGSSAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = hr.hgss.HGSSAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HGSSApp.app/HGSSApp";
+			};
+			name = Release;
+		};
+		CDA888641ECF359F00BF04EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 67Z8CD63L2;
+				INFOPLIST_FILE = HGSSAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = hr.hgss.HGSSAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = HGSSApp;
+			};
+			name = Debug;
+		};
+		CDA888651ECF359F00BF04EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 67Z8CD63L2;
+				INFOPLIST_FILE = HGSSAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = hr.hgss.HGSSAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = HGSSApp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CDA8882B1ECF359F00BF04EB /* Build configuration list for PBXProject "HGSSApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDA8885B1ECF359F00BF04EB /* Debug */,
+				CDA8885C1ECF359F00BF04EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CDA8885D1ECF359F00BF04EB /* Build configuration list for PBXNativeTarget "HGSSApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDA8885E1ECF359F00BF04EB /* Debug */,
+				CDA8885F1ECF359F00BF04EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CDA888601ECF359F00BF04EB /* Build configuration list for PBXNativeTarget "HGSSAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDA888611ECF359F00BF04EB /* Debug */,
+				CDA888621ECF359F00BF04EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CDA888631ECF359F00BF04EB /* Build configuration list for PBXNativeTarget "HGSSAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDA888641ECF359F00BF04EB /* Debug */,
+				CDA888651ECF359F00BF04EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CDA888281ECF359F00BF04EB /* Project object */;
+}

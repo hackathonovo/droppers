@@ -234,7 +234,9 @@ public class RescueService {
 		updateObj.put("timestampOfFinish", System.currentTimeMillis());
 		updateObj.put("active", false);
 
-		List<String> ids = StreamEx.of(rescue.getRescuers()).map(RescuerStatus::getRescuerId).toList();
+		List<String> ids = StreamEx.of(rescue.getRescuers())
+			.map(RescuerStatus::getRescuerId)
+			.toList();
 		try (Jedis jedis = redisManager.get(Redises.GEO)) {
 			Pipeline pipeline = jedis.pipelined();
 			Map<String, Response<List<String>>> responseMap = StreamEx.of(ids).mapToEntry(id -> pipeline.lrange(id, 0, -1)).toMap();
