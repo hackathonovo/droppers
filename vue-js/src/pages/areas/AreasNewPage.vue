@@ -62,33 +62,61 @@
         }
 
 
-        const drawingManager = new window.google.maps.drawing.DrawingManager({
-          drawingControl: true,
-          drawingControlOptions: {
-            position: window.google.maps.ControlPosition.TOP_CENTER,
-            drawingModes: ['polygon']
-          }
-        });
-        drawingManager.setMap(this.map);
 
-        window.google.maps.event.addListener(drawingManager, 'polygoncomplete', (poly) => {
-          const lines = poly.getPaths().b[0].b;
-          const polygon = [];
+        if (!currAction.areas) {
+          const drawingManager = new window.google.maps.drawing.DrawingManager({
+            drawingControl: true,
+            drawingControlOptions: {
+              position: window.google.maps.ControlPosition.TOP_CENTER,
+              drawingModes: ['polygon']
+            }
+          });
+          drawingManager.setMap(this.map);
 
-          lines.forEach((line) => {
-            polygon.push([
-              line.lng(),
-              line.lat()
-            ]);
+          window.google.maps.event.addListener(drawingManager, 'polygoncomplete', (poly) => {
+            const lines = poly.getPaths().b[0].b;
+            const polygon = [];
+
+            lines.forEach((line) => {
+              polygon.push([
+                line.lng(),
+                line.lat()
+              ]);
+            });
+
+            this.features.coordinates = [polygon];
+          });
+        } else {
+          const polyCoords = currAction.areas[0].coordinates[0].map((coord) => {
+            return {
+              lng: coord[0],
+              lat: coord[1]
+            };
           });
 
-          this.features.coordinates = [polygon];
-        });
+          const polygon = new window.google.maps.Polygon({
+            paths: polyCoords
+          });
+          polygon.setMap(this.map);
+        }
       },
 
       onSave() {
         this[mutationTypes.AREA_DETAIL_SET](this.features);
         this.sendAreaDetails();
+
+        this.$router.push({
+          path: '/actions'
+        });
+      },
+
+      onFInish() {
+        this[mutationTypes.AREA_DETAIL_SET](this.features);
+        this.sendAreaDetails();
+
+        this.$router.push({
+          path: '/actions'
+        });
       }
     },
 

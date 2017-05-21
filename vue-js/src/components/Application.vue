@@ -28,11 +28,6 @@
       </md-toolbar>
       <md-list>
         <md-list-item>
-          <router-link exact :to="'/home'">
-            <md-icon>home</md-icon> <span>Home</span>
-          </router-link>
-        </md-list-item>
-        <md-list-item>
           <router-link exact :to="'/rescuers'">
             <md-icon>directions_run</md-icon> <span>Rescuers</span>
           </router-link>

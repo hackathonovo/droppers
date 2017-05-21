@@ -35,6 +35,9 @@ const routes = [{
   name: 'home',
   meta: {
     authenticatedRoute: true
+  },
+  redirect: {
+    name: 'rescuers'
   }
 }, {
   path: '/rescuers',
@@ -45,6 +48,7 @@ const routes = [{
   children: [{
     path: '',
     component: RescuersOverviewPage,
+    name: 'rescuers',
     meta: {
       authenticatedRoute: true
     }
@@ -113,26 +117,26 @@ const router = new VueRouter({
   routes
 });
 
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.authenticatedRoute && !store.getters.isAuthenticated) {
-//     if (!store.state.session.isLoaded) {
-//       store.dispatch('checkSession').then(() => {
-//         next();
-//       }).catch(() => {
-//         store.commit('UNAUTHENTICATED_REQUEST', to.name);
-//         next({
-//           name: 'login'
-//         });
-//       });
-//     } else {
-//       store.commit('UNAUTHENTICATED_REQUEST', to.name);
-//       next({
-//         name: 'login'
-//       });
-//     }
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  if (to.meta.authenticatedRoute && !store.getters.isAuthenticated) {
+    if (!store.state.session.isLoaded) {
+      store.dispatch('checkSession').then(() => {
+        next();
+      }).catch(() => {
+        store.commit('UNAUTHENTICATED_REQUEST', to.name);
+        next({
+          name: 'login'
+        });
+      });
+    } else {
+      store.commit('UNAUTHENTICATED_REQUEST', to.name);
+      next({
+        name: 'login'
+      });
+    }
+  } else {
+    next();
+  }
+});
 
 export default router;

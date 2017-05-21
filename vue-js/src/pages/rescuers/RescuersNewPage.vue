@@ -113,6 +113,10 @@
       formSubmit() {
         this[mutationTypes.RESCUERS_DETAIL_EDIT](this.form);
         this.sendRescuerDetails();
+
+        this.$router.push({
+          path: '/rescuers'
+        });
       }
     },
     data() {
