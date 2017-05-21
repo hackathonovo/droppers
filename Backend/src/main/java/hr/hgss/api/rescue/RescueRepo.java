@@ -1,6 +1,7 @@
 package hr.hgss.api.rescue;
 
 import hr.hgss.api.rescue.model.Rescue;
+import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
@@ -9,5 +10,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface RescueRepo extends MongoRepository<Rescue, String> {
 
-
+	List<Rescue> findAllByActive(Boolean active);
 }

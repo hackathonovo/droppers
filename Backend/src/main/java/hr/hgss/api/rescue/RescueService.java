@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -58,6 +59,12 @@ public class RescueService {
 		this.rescueOperations = rescueOperations;
 	}
 
+	@RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
+	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
+	public List<Rescue> getActions(@RequestParam(defaultValue = "true") boolean active) {
+		return repo.findAllByActive(active);
+	}
+
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value = "/define", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public Rescue defineRescue(@RequestBody RescueDefineModel model) {
@@ -70,6 +77,7 @@ public class RescueService {
 			.description(model.getDescription())
 			.injuredContact(model.getInjuredContact())
 			.pearsonWhoCalledContact(model.getPearsonWhoCalledContact())
+			.active(true)
 			.build();
 
 		List<User> all = userRepo.findById(model.getRescuersId());

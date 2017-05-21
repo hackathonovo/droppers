@@ -29,4 +29,5 @@ public class Rescue {
 	private Long timestampOfRescue;
 	private Long timestampOfFinish;
 	private String finishNotes;
+	private final Boolean active;
 }
