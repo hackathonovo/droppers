@@ -24,13 +24,18 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+import javax.util.streamex.StreamEx;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.GeoResults;
+import org.springframework.data.geo.Metrics;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
@@ -74,6 +79,19 @@ public class UserService {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public List<User> getAll() {
 		return userRepo.findAll();
+	}
+
+	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
+	@RequestMapping(value = "/nearest", method = RequestMethod.GET)
+	public List<User> findNearest(
+		@RequestParam(name = "longitude") Double longitude,
+		@RequestParam(name = "latitude") Double latitude
+	) {
+		log.info("Nearest to " + longitude + " " + latitude);
+		NearQuery nearQuery = NearQuery.near(longitude, latitude)
+			.maxDistance(50, Metrics.KILOMETERS);
+		GeoResults<User> results = mongoTemplate.geoNear(nearQuery, User.class);
+		return StreamEx.of(results.getContent()).map(GeoResult::getContent).toList();
 	}
 
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
@@ -304,4 +322,9 @@ public class UserService {
 //			return longitude + "_" + latitude + "_" + timestamp;
 //		}
 //	}
+public static void main(String[] args) {
+	NearQuery near = NearQuery.near(12.4, 132.1);
+
+	System.out.println(near);
+}
 }

@@ -1,11 +1,13 @@
 package hr.hgss.api.rescue;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import hr.hgss.PushNotifSender;
 import hr.hgss.Util;
 import hr.hgss.api.Keys;
 import hr.hgss.api.rescue.model.AddAreasModel;
 import hr.hgss.api.rescue.model.Area;
+import hr.hgss.api.rescue.model.AssignAreaRequest;
 import hr.hgss.api.rescue.model.FinishAction;
 import hr.hgss.api.rescue.model.MessageAndLocationModel;
 import hr.hgss.api.rescue.model.Rescue;
@@ -173,6 +175,36 @@ public class RescueService {
 			Query.query(Criteria.where("_id").is(model.getRescueId())),
 			new BasicUpdate(obj),
 			Rescue.class
+		);
+	}
+
+	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
+	@RequestMapping(value = "/assign_area", method = RequestMethod.POST)
+	public void assignArea(@RequestBody AssignAreaRequest assignAreaRequest) {
+		log.info(assignAreaRequest.toString());
+		Rescue rescue = repo.findOne(assignAreaRequest.getRescueId());
+		if (rescue == null) {
+			return;
+		}
+		List<DBObject> objects = StreamEx.of(rescue.getRescuers())
+			.map(r -> {
+				if (r.getRescuerId().equals(assignAreaRequest.getRescuerId())) {
+					return RescuerStatus.builder()
+						.rescuerId(r.getRescuerId())
+						.longitude(r.getLongitude())
+						.latitude(r.getLatitude())
+						.status(r.getStatus())
+						.assignedArea(assignAreaRequest.getAreaId())
+						.build();
+				}
+				return r;
+			})
+			.map(RescuerStatus::toDbObject)
+			.toList();
+		rescueOperations.updateFirst(
+			Query.query(Criteria.where("_id").is(assignAreaRequest.getRescueId())),
+			Update.update("rescuers", objects),
+			User.class
 		);
 	}
 
