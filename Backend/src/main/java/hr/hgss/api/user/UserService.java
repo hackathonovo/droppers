@@ -87,6 +87,7 @@ public class UserService {
 		@RequestParam(name = "longitude") Double longitude,
 		@RequestParam(name = "latitude") Double latitude
 	) {
+		log.info("Nearest to " + longitude + " " + latitude);
 		NearQuery nearQuery = NearQuery.near(longitude, latitude)
 			.maxDistance(50, Metrics.KILOMETERS);
 		GeoResults<User> results = mongoTemplate.geoNear(nearQuery, User.class);
