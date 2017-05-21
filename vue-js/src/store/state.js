@@ -20,6 +20,12 @@ const state = {
     isLoaded: false,
     isLoading: false,
     data: []
+  },
+
+  history: {
+    isLoaded: false,
+    isLoading: false,
+    data: []
   }
 };
 

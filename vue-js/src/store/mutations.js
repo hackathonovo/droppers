@@ -94,4 +94,20 @@ export default {
     state.actions.isLoading = false;
     state.actions.isLoaded = false;
   },
+  // history MUTATIONS
+
+  [mutationTypes.HISTORY_REQUEST](state) {
+    state.history.isLoading = true;
+  },
+
+  [mutationTypes.HISTORY_SUCCESS](state, data) {
+    state.history.data = data;
+    state.history.isLoaded = true;
+    state.history.isLoading = false;
+  },
+
+  [mutationTypes.HISTORY_FAILURE](state) {
+    state.history.isLoading = false;
+    state.history.isLoaded = false;
+  },
 };

@@ -34,4 +34,16 @@ export default {
   isActionsLoading(state) {
     return state.actions.isLoading;
   },
+
+  history(state) {
+    return state.history.data;
+  },
+
+  isHistoryLoaded(state) {
+    return state.history.isLoaded;
+  },
+
+  isHistoryLoading(state) {
+    return state.history.isLoading;
+  }
 };

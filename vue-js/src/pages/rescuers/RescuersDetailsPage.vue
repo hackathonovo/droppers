@@ -16,7 +16,7 @@
           <div class="md-title">Edit rescuer</div>
         </md-card-header-text>
         <md-card-content>
-          <form novalidate>
+          <form novalidate v-if="form">
             <label>Name</label>
 
             <md-input-container>
