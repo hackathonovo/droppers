@@ -8,7 +8,7 @@ const REQUEST_AUTHORIZATION_TOKEN = 'X-Authorization-Token';
 class ApiAdapter {
   get authHeaders() {
     return {
-      [REQUEST_AUTHORIZATION_TOKEN]: `${this.token}`
+      [REQUEST_AUTHORIZATION_TOKEN]: `${this.token || 'b6hda4uaamobal74cva5s1n9f5tu5rsro3tatdjjbkqbg6s4c58'}`
     };
   }
 
@@ -29,7 +29,7 @@ class ApiAdapter {
 
   login({username, password}) {
     const data = {
-      username,
+      email: username,
       password
     };
 
@@ -107,6 +107,12 @@ class ApiAdapter {
   fetchActions() {
     const url = `${API_NAMESPACE}/rescue`;
     return this.get(url);
+  }
+
+  // history
+  fetchHistory() {
+    const url = `${API_NAMESPACE}/rescue`;
+    return this.get(url, {active: false});
   }
 }
 

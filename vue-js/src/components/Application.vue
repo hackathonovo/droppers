@@ -42,6 +42,11 @@
             <md-icon>priority_high</md-icon> <span>Actions</span>
           </router-link>
         </md-list-item>
+        <md-list-item>
+          <router-link exact :to="'/history'">
+            <md-icon>history</md-icon> <span>History</span>
+          </router-link>
+        </md-list-item>
 
       <!--  <md-list-item>
           <router-link exact :to="'home'">

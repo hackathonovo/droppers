@@ -88,11 +88,9 @@ export default function({apiAdapter, localStorage}) {
 
     sendAreaDetails({state}) {
       apiAdapter.sendArea(state.currentArea.data).then((data) => {
-        console.log(data);
       }).catch(() => {
       });
     },
-
 
     fetchActions({commit, state}) {
       commit(mutationTypes.ACTIONS_REQUEST);
@@ -100,6 +98,16 @@ export default function({apiAdapter, localStorage}) {
         commit(mutationTypes.ACTIONS_SUCCESS, data);
       }).catch((error) => {
         commit(mutationTypes.ACTIONS_FAILURE);
+        throw error;
+      });
+    },
+
+    fetchHistory({commit, state}) {
+      commit(mutationTypes.HISTORY_REQUEST);
+      apiAdapter.fetchHistory().then((data) => {
+        commit(mutationTypes.HISTORY_SUCCESS, data);
+      }).catch((error) => {
+        commit(mutationTypes.HISTORY_FAILURE);
         throw error;
       });
     }

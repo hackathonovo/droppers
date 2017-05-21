@@ -14,6 +14,7 @@ import AreasNewPage from 'pages/areas/AreasNewPage';
 
 import ActionsPage from 'pages/ActionsPage';
 import ActionsOverviewPage from 'pages/actions/ActionsOverviewPage';
+import ActionsHistoryPage from 'pages/actions/ActionsHistoryPage';
 
 import NotFoundPage from 'pages/NotFoundPage';
 
@@ -82,6 +83,19 @@ const routes = [{
   children: [{
     path: '',
     component: ActionsOverviewPage,
+    meta: {
+      authenticatedRoute: true
+    }
+  }]
+}, {
+  path: '/history',
+  component: ActionsPage,
+  meta: {
+    authenticatedRoute: true
+  },
+  children: [{
+    path: '',
+    component: ActionsHistoryPage,
     meta: {
       authenticatedRoute: true
     }
