@@ -83,6 +83,7 @@ public class RescueService {
 		List<User> all = userRepo.findById(model.getRescuersId());
 		Rescue insert = repo.insert(rescue);
 		if (all != null) {
+			log.info("Sending to push notif: " + all);
 			all.forEach(user -> // Notify users.
 				Util.ifNotNull(user.getIosTokens(),
 					tokens -> tokens.forEach(
@@ -141,4 +142,6 @@ public class RescueService {
 		);
 		return repo.findOne(model.getRescueId());
 	}
+
+
 }
