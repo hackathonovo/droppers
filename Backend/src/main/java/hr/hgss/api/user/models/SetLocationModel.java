@@ -8,7 +8,6 @@ import lombok.Data;
  */
 @Data
 public class SetLocationModel {
-
 	private String id;
 	private Double longitude;
 	private Double latitude;

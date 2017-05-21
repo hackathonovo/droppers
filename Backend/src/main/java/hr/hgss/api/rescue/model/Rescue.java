@@ -1,7 +1,9 @@
 package hr.hgss.api.rescue.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hr.hgss.api.user.models.Location;
 import java.util.List;
+import java.util.Map;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -29,7 +31,11 @@ public class Rescue {
 	private Long timestampOfRescue;
 	private Long timestampOfFinish;
 	private String finishNotes;
+
 	private final Boolean active;
+
+	@JsonIgnore
+	private final Map<String, List<String>> userIdToTimestampLongLat;
 
 	private List<MessageAndLocation> messages;
 }
