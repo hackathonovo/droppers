@@ -29,7 +29,9 @@
     methods: {
       ...mapMutations([
         mutationTypes.AREA_DETAIL_SET,
-        mutationTypes.RESCUE_FINISH
+        mutationTypes.RESCUE_FINISH,
+        mutationTypes.ACTIONS_FAILURE,
+        mutationTypes.HISTORY_FAILURE
       ]),
 
       ...mapActions([
@@ -123,6 +125,9 @@
       onFinish() {
         this[mutationTypes.RESCUE_FINISH](this.finish);
         this.finishRescue();
+
+        this[mutationTypes.ACTIONS_FAILURE]();
+        this[mutationTypes.HISTORY_FAILURE]();
 
         this.$router.push({
           path: '/actions'
