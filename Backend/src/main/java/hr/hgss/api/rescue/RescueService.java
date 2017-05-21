@@ -71,6 +71,7 @@ public class RescueService {
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value = "/define", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public Rescue defineRescue(@RequestBody RescueDefineModel model) {
+		log.info(model.toString());
 		Map<String, Location> idToLocation = StreamEx.of(userRepo.findById(model.getRescuers()))
 			.mapToEntry(User::getId, User::getLastKnownLocation)
 			.toMap();
@@ -114,6 +115,7 @@ public class RescueService {
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value ="/set_status", method = RequestMethod.POST)
 	public Rescue setRescuerStatus(@RequestBody SetRescuerStatusModel model) {
+		log.info(model.toString());
 		Rescue one = repo.findOne(model.getRescueId());
 		List<RescuerStatus> rescuerStatuses = StreamEx.of(one.getRescuers())
 			.map(rescuerStatus -> {
@@ -136,6 +138,7 @@ public class RescueService {
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value = "/add_areas", method = RequestMethod.POST)
 	public void defineAreas(@RequestBody AddAreasModel model, HttpServletResponse response) {
+		log.info(model.toString());
 		Rescue one = repo.findOne(model.getRescueId());
 		if (one == null) {
 			response.setStatus(HttpStatus.NOT_FOUND.value());
@@ -161,6 +164,7 @@ public class RescueService {
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value ="/add_message", method = RequestMethod.POST)
 	public void addMessageAndLocation(@RequestBody MessageAndLocationModel model) {
+		log.info(model.toString());
 		BasicDBObject obj = new BasicDBObject();
 		obj.put("rescuerId", model.getRescuerId());
 		obj.put("message", model.getMessage());

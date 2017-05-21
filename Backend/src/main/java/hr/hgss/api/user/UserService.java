@@ -94,6 +94,7 @@ public class UserService {
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value = "/update", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public User updateUser(@RequestBody User updatedUser, HttpServletResponse response) {
+		log.info(updatedUser.toString());
 		DBObject dbObject = updatedUser.toDbObject();
 		dbObject.removeField("_id");
 		WriteResult writeResult = userOperations.updateFirst(Query.query(Criteria.where("_id").is(updatedUser.getId())), Update.fromDBObject(new BasicDBObject("$set", dbObject), "_id"), User.class);
@@ -137,6 +138,7 @@ public class UserService {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public User register(@RequestBody RegisterModel registerModel, HttpServletResponse response) {
+		log.info(registerModel.toString());
 		String email = registerModel.getEmail();
 		User userByEmail = userRepo.findByEmail(email);
 		if (userByEmail != null) {
@@ -172,6 +174,7 @@ public class UserService {
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value = "/location", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public User setLastKnownLocation(@RequestBody SetLocationModel setLocationModel, HttpServletResponse response) {
+		log.info(setLocationModel.toString());
 		BasicDBObject basicDBObject = new BasicDBObject();
 		basicDBObject.put("lastKnownLocation.type", "Point");
 		List<Double> coordinates = Arrays.asList(setLocationModel.getLongitude(), setLocationModel.getLatitude());
@@ -211,6 +214,7 @@ public class UserService {
 		ifNotNull(hasSearchDog, d -> obj.put("hasSearchDog", d));
 		ifNotNull(specialities, s -> obj.put("specialties", new BasicDBObject("$in", specialities)));
 		ifNotNull(region, r -> obj.put("region", r));
+		log.info("Searching for: " + obj);
 		List<User> users = userOperations.find(new BasicQuery(obj), User.class);
 		if (isAvailable == null || isAvailable) {
 			long now = time.currentTimestampMillis();
@@ -222,6 +226,7 @@ public class UserService {
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value = "/setExtraAvailablePeriod", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
 	public User setExtraAvailablePeriod(@RequestBody ExtraAvailablePeriod period, HttpServletResponse response) {
+		log.info(period.toString());
 		BasicDBObject update = new BasicDBObject("$push",
 			new BasicDBObject("extraAvailablePeriods", period.toDbObject())
 		);
