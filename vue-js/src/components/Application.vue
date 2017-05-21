@@ -11,7 +11,6 @@
       <h2 :class="[$style.title, 'md-title']">HGSS - Admin dashboard</h2>
       <md-button
         class="md-icon-button"
-        v-if="session.user"
         @click.native="logoutCurrentUser">
         <md-icon>exit_to_app</md-icon>
       </md-button>
@@ -36,6 +35,11 @@
         <md-list-item>
           <router-link exact :to="'/rescuers'">
             <md-icon>directions_run</md-icon> <span>Rescuers</span>
+          </router-link>
+        </md-list-item>
+        <md-list-item>
+          <router-link exact :to="'/actions'">
+            <md-icon>priority_high</md-icon> <span>Actions</span>
           </router-link>
         </md-list-item>
 

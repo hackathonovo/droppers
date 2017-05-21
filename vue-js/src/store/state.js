@@ -9,6 +9,17 @@ const state = {
     isLoaded: false,
     isLoading: false,
     data: []
+  },
+  currentRescuer: {
+    data: {}
+  },
+  currentArea: {
+    data: {}
+  },
+  actions: {
+    isLoaded: false,
+    isLoading: false,
+    data: []
   }
 };
 

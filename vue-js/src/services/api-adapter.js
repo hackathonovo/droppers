@@ -3,12 +3,12 @@ import request from 'services/request';
 const API_DOMAIN = 'http://192.168.201.43:8080';
 const API_NAMESPACE = `${API_DOMAIN}/api/v1`;
 const RESPONSE_AUTHORIZATION_TOKEN = 'X-Authorization-Token';
-const REQUEST_AUTHORIZATION_TOKEN = 'Authorization';
+const REQUEST_AUTHORIZATION_TOKEN = 'X-Authorization-Token';
 
 class ApiAdapter {
   get authHeaders() {
     return {
-      [REQUEST_AUTHORIZATION_TOKEN]: `Bearer ${this.token}`
+      [REQUEST_AUTHORIZATION_TOKEN]: `${this.token}`
     };
   }
 
@@ -22,72 +22,8 @@ class ApiAdapter {
       method: 'get',
       headers: this.authHeaders,
       data: payload
-    }).then(({response}) => {
-      return response;
-    }).catch(() => {
-      return [
-        {
-          id: '5920570a25cb5f5bc9d789f2',
-          email: 'fredi.saric@fer.hr',
-          firstName: 'Fredi',
-          lastName: 'Šarić',
-          phoneNumber: '095 4233761',
-          specialities: [
-            'MASTER_OF_UNIVERS'
-          ],
-          address: {
-            city: 'Zagreb',
-            country: 'Croatia',
-            postalCode: '10000',
-            street: 'Mlinovi',
-            streetNumber: '36'
-          },
-          lastKnownLocation: null,
-          rank: null,
-          region: null,
-          hasSearchDog: null
-        }, {
-          id: '5920570a24cb5f5bc9d789f2',
-          email: 'matej.janjic@fer.hr',
-          firstName: 'Matej',
-          lastName: 'Janjić',
-          phoneNumber: '091 187 1140',
-          specialities: [
-            'pleb'
-          ],
-          address: {
-            city: 'Stupnik',
-            country: 'Croatia',
-            postalCode: '10255',
-            street: 'Gorenska',
-            streetNumber: '12'
-          },
-          lastKnownLocation: null,
-          rank: null,
-          region: null,
-          hasSearchDog: null
-        }, {
-          id: '5920570a25cb5f5bc9e789f2',
-          email: 'matija.simicic@fer.hr',
-          firstName: 'Matija',
-          lastName: 'Šimićić',
-          phoneNumber: '095 4233761',
-          specialities: [
-            'BEAR'
-          ],
-          address: {
-            city: 'Zagreb',
-            country: 'Croatia',
-            postalCode: '10040',
-            street: 'Dankovečka',
-            streetNumber: '9'
-          },
-          lastKnownLocation: null,
-          rank: null,
-          region: null,
-          hasSearchDog: null
-        }
-      ];
+    }).then(({data}) => {
+      return data;
     });
   }
 
@@ -100,11 +36,13 @@ class ApiAdapter {
     return request({
       url: `${API_NAMESPACE}/users/login`,
       method: 'post',
+      mode: 'no-cors',
+      headers: this.authHeaders,
       data
     }).then((response) => {
       return {
         user: response.data,
-        token: response.headers.get(RESPONSE_AUTHORIZATION_TOKEN)
+        token: response.data.accessToken
       };
     });
   }
@@ -115,7 +53,7 @@ class ApiAdapter {
   }
 
   fetchRescuers() {
-    const url = `${API_NAMESPACE}/users`;
+    const url = `${API_NAMESPACE}/users/`;
     return this.get(url);
   }
 
@@ -133,6 +71,42 @@ class ApiAdapter {
     }).then(({response}) => {
       return response;
     });
+  }
+
+  sendRescuer(data) {
+    return request({
+      url: `${API_NAMESPACE}/users/register`,
+      method: 'post',
+      headers: this.authHeaders,
+      data
+    });
+  }
+
+  patchRescuer(data) {
+    return request({
+      url: `${API_NAMESPACE}/users/update`,
+      method: 'post',
+      headers: this.authHeaders,
+      data
+    });
+  }
+
+  // AREA
+
+  sendArea(data) {
+    return request({
+      url: `${API_NAMESPACE}/rescue/add_areas`,
+      method: 'post',
+      headers: this.authHeaders,
+      data
+    });
+  }
+
+
+  // actions
+  fetchActions() {
+    const url = `${API_NAMESPACE}/rescue`;
+    return this.get(url);
   }
 }
 

@@ -11,15 +11,27 @@ export default {
     return state.rescuers.data;
   },
 
-  getRescuerDetails(state) {
-    return state.rescuers.data[0]; // TODO find by something
-  },
-
   isRescuersLoaded(state) {
     return state.rescuers.isLoaded;
   },
 
   isRescuersLoading(state) {
     return state.rescuers.isLoading;
-  }
+  },
+
+  getRescuerDetails(state) {
+    return state.currentRescuer.data;
+  },
+
+  actions(state) {
+    return state.actions.data;
+  },
+
+  isActionsLoaded(state) {
+    return state.actions.isLoaded;
+  },
+
+  isActionsLoading(state) {
+    return state.actions.isLoading;
+  },
 };

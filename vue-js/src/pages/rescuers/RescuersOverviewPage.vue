@@ -8,12 +8,12 @@
     </div>
     <div v-else>
       <md-table-card :class="$style.card">
-        <md-table md-sort="calories">
+        <md-table md-sort="firstName" @sort="reOrder">
           <md-table-header>
             <md-table-row>
-              <md-table-head md-sort-by="first-name">First name</md-table-head>
-              <md-table-head md-sort-by="last-name">Last name</md-table-head>
-              <md-table-head md-sort-by="phone-number">Phone number</md-table-head>
+              <md-table-head md-sort-by="firstName">First name</md-table-head>
+              <md-table-head md-sort-by="lastName">Last name</md-table-head>
+              <md-table-head md-sort-by="phoneNumber">Phone number</md-table-head>
               <md-table-head md-sort-by="email">Email</md-table-head>
               <md-table-head md-sort-by="adress">Adress</md-table-head>
               <md-table-head md-sort-by="speciality">Speciality</md-table-head>
@@ -24,15 +24,17 @@
             <md-table-row
               :key="res.id"
               :class="$style.row"
-              v-for="res in rescuers"
-              @click.native.prevent="rowSelected(index)"
+              v-for="res in orderedRescuers"
+              @click.native.prevent="rowSelected(res.id)"
             >
               <md-table-cell md-sort-by="res.firstName">{{res.firstName}}</md-table-cell>
               <md-table-cell>{{res.lastName}}</md-table-cell>
               <md-table-cell>{{res.phoneNumber}}</md-table-cell>
               <md-table-cell>{{res.email}}</md-table-cell>
-              <md-table-cell>{{res.address.street + ' ' + res.address.streetNumber}}</md-table-cell>
-              <md-table-cell>{{res.specialities.join('')}}</md-table-cell>
+              <md-table-cell v-if="res.address">{{res.address.street + ' ' + res.address.streetNumber}}</md-table-cell>
+              <md-table-cell v-else>No info</md-table-cell>
+              <md-table-cell v-if="res.specialties">{{res.specialties.join(', ')}}</md-table-cell>
+              <md-table-cell v-else>No info</md-table-cell>
             </md-table-row>
           </md-table-body>
 
@@ -52,17 +54,17 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex';
+  import orderBy from 'lodash.orderby';
 
   export default {
     computed: {
       ...mapGetters([
-        'getRescuerDetails',
         'isRescuersLoading',
         'rescuers'
       ]),
 
-      orderedItems() {
-        return _.orderBy(this.rescuers, this.orderField, this.direction);
+      orderedRescuers() {
+        return orderBy(this.rescuers, this.orderField, this.direction);
       }
     },
 
@@ -85,6 +87,8 @@
 
     data() {
       return {
+        orderField: 'id',
+        direction: 'asc'
       };
     },
 
@@ -110,17 +114,3 @@
     cursor: pointer;
   }
 </style>
-
-
-
-  computed: {
-    orderedItems: function () {
-      return _.orderBy(this.items, this.orderField, this.direction)
-    }
-  },
-  methods: {
-    reOrder(object) {
-      this.orderField = object.name;
-      this.direction = object.type;
-    }
-  }
