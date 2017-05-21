@@ -173,7 +173,7 @@ public class UserService {
 
 	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
 	@RequestMapping(value = "/location", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
-	public User setLastKnownLocation(@RequestBody SetLocationModel setLocationModel, HttpServletResponse response) {
+	public User setLastKnownLocation(@RequestBody SetLocationModel setLocationModel) {
 		log.info(setLocationModel.toString());
 		BasicDBObject basicDBObject = new BasicDBObject();
 		basicDBObject.put("lastKnownLocation.type", "Point");

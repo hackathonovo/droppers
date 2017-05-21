@@ -6,6 +6,7 @@ import hr.hgss.Util;
 import hr.hgss.api.Keys;
 import hr.hgss.api.rescue.model.AddAreasModel;
 import hr.hgss.api.rescue.model.Area;
+import hr.hgss.api.rescue.model.FinishAction;
 import hr.hgss.api.rescue.model.MessageAndLocationModel;
 import hr.hgss.api.rescue.model.Rescue;
 import hr.hgss.api.rescue.model.RescueDefineModel;
@@ -14,6 +15,8 @@ import hr.hgss.api.rescue.model.SetRescuerStatusModel;
 import hr.hgss.api.user.User;
 import hr.hgss.api.user.UserRepo;
 import hr.hgss.api.user.models.Location;
+import hr.hgss.databes.redis.RedisManager;
+import hr.hgss.databes.redis.Redises;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import java.util.Arrays;
@@ -22,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+import javax.util.streamex.EntryStream;
 import javax.util.streamex.StreamEx;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +42,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
+import redis.clients.jedis.Response;
 
 /**
  *
@@ -53,13 +60,21 @@ public class RescueService {
 	private final UserRepo userRepo;
 	private final PushNotifSender pushNotifSender;
 	private final MongoOperations rescueOperations;
+	private final RedisManager redisManager;
 
 	@Autowired
-	public RescueService(RescueRepo repo, UserRepo userRepo, PushNotifSender pushNotifSender, MongoOperations rescueOperations) {
+	public RescueService(
+		RescueRepo repo,
+		UserRepo userRepo,
+		PushNotifSender pushNotifSender,
+		MongoOperations rescueOperations,
+		RedisManager redisManager
+	) {
 		this.repo = repo;
 		this.userRepo = userRepo;
 		this.pushNotifSender = pushNotifSender;
 		this.rescueOperations = rescueOperations;
+		this.redisManager = redisManager;
 	}
 
 	@RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
@@ -174,6 +189,40 @@ public class RescueService {
 		rescueOperations.updateFirst(
 			Query.query(Criteria.where("_id").is(model.getRescueId())),
 			Update.update("$push", new BasicDBObject("messages", obj)),
+			Rescue.class
+		);
+	}
+
+	@ApiImplicitParams(@ApiImplicitParam(name = Keys.X_AUTHORIZATION_TOKEN, paramType = "header", required = true))
+	@RequestMapping(value = "/finish", method = RequestMethod.POST)
+	public void finishAction(@RequestBody FinishAction finish) {
+		Rescue rescue = repo.findOne(finish.getRescueId());
+		BasicDBObject updateObj = new BasicDBObject();
+		updateObj.put("finishNotes", finish.getFinishNotes());
+		updateObj.put("timestampOfFinish", System.currentTimeMillis());
+		updateObj.put("active", false);
+
+		List<String> ids = StreamEx.of(rescue.getRescuers()).map(RescuerStatus::getRescuerId).toList();
+		try (Jedis jedis = redisManager.get(Redises.GEO)) {
+			Pipeline pipeline = jedis.pipelined();
+			Map<String, Response<List<String>>> responseMap = StreamEx.of(ids).mapToEntry(id -> pipeline.lrange(id, 0, -1)).toMap();
+			pipeline.sync();
+			Map<String, List<String>> locations = EntryStream.of(responseMap)
+				.mapValues(Response::get)
+				.mapValues(list ->
+					StreamEx.of(list)
+						.filter(l -> {
+							long timestamp = Long.parseLong(l.split("_")[0]);
+							return rescue.getTimestampOfRescue() <= timestamp;
+						}).toList()
+				)
+				.toMap();
+			updateObj.put("userIdToTimestampLongLat", locations);
+		}
+
+		rescueOperations.updateFirst(
+			Query.query(Criteria.where("_id").is(finish.getRescueId())),
+			Update.fromDBObject(new BasicDBObject("$set", updateObj)),
 			Rescue.class
 		);
 	}
